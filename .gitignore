@@ -33,3 +33,5 @@ node_modules
 #Ignore dist folder
 dist
 
+#Ignore vscode configuration
+.vscode
