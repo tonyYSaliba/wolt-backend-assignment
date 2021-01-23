@@ -13,23 +13,21 @@ export function up(db: knex) {
       table.dateTime('updated').notNullable()
     })
     .then(() => {
-      return db.schema.createTable('task', table => {
+      return db.schema.createTable('restaurant', table => {
         table.increments('id').primary()
+        table.string('blurhash').notNullable()
+        table.decimal('longitude').notNullable()
+        table.decimal('latitude').notNullable()
         table.string('name', 64).notNullable()
-        table.string('description').notNullable()
-        table.boolean('done').notNullable()
+        table.boolean('online').notNullable()
+        table.dateTime('launch_date').notNullable()
+        table.decimal('popularity').notNullable()
         table.dateTime('created').notNullable()
         table.dateTime('updated').notNullable()
-        table
-          .integer('user_id')
-          .notNullable()
-          .unsigned()
-          .references('id')
-          .inTable('user')
       })
     })
 }
 
 export function down(db: knex) {
-  return db.schema.dropTable('task').dropTable('user')
+  return db.schema.dropTable('restaurant').dropTable('user')
 }
