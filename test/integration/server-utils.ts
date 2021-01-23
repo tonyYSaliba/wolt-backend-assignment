@@ -2,7 +2,7 @@ import * as pino from 'pino'
 import * as supertest from 'supertest'
 import { createContainer } from '../../src/container'
 import { createServer } from '../../src/server'
-import { CreateTask, TaskModel } from '../../src/server/tasks/model'
+import { CreateTask, TaskModel } from '../../src/server/restaurants/model'
 import { CreateUser, UserModel } from '../../src/server/users/model'
 import { database } from './database-utils'
 
@@ -27,13 +27,13 @@ export function shuttingDown(): void {
 }
 
 export async function createTaskTest(
-  task: CreateTask,
+  restaurant: CreateTask,
   token: string
 ): Promise<TaskModel> {
   const res = await supertest(testServer)
-    .post('/api/v1/tasks')
+    .post('/api/v1/restaurants')
     .set('Authorization', token)
-    .send(task)
+    .send(restaurant)
     .expect(201)
 
   return res.body

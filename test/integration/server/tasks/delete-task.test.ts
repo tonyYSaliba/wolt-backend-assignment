@@ -8,11 +8,11 @@ import {
   testServer
 } from '../../server-utils'
 
-describe('DELETE /api/v1/tasks/:id', () => {
+describe('DELETE /api/v1/restaurants/:id', () => {
   let token: string
 
   before(async () => {
-    await truncateTables(['task', 'user'])
+    await truncateTables(['restaurant', 'user'])
 
     const user = {
       email: 'dude@gmail.com',
@@ -25,35 +25,35 @@ describe('DELETE /api/v1/tasks/:id', () => {
     token = await getLoginToken('dude@gmail.com', 'secret')
   })
 
-  it('Should delete a task and return 204', async () => {
-    const task = {
+  it('Should delete a restaurant and return 204', async () => {
+    const restaurant = {
       name: 'Do Something',
       description: 'Some random description'
     }
 
-    const createdTask = await createTaskTest(task, token)
+    const createdTask = await createTaskTest(restaurant, token)
 
     await supertest(testServer)
-      .delete(`/api/v1/tasks/${createdTask.id}`)
+      .delete(`/api/v1/restaurants/${createdTask.id}`)
       .set('Authorization', token)
       .expect(204)
 
     await supertest(testServer)
-      .get(`/api/v1/tasks/${createdTask.id}`)
+      .get(`/api/v1/restaurants/${createdTask.id}`)
       .set('Authorization', token)
       .expect(404)
   })
 
-  it('Should return 404 when task does not exist', async () => {
+  it('Should return 404 when restaurant does not exist', async () => {
     await supertest(testServer)
-      .delete(`/api/v1/tasks/1000000`)
+      .delete(`/api/v1/restaurants/1000000`)
       .set('Authorization', token)
       .expect(404)
   })
 
   it('Should return unauthorized when token is not valid', async () => {
     const res = await supertest(testServer)
-      .delete(`/api/v1/tasks/1000000`)
+      .delete(`/api/v1/restaurants/1000000`)
       .set('Authorization', 'wrong token')
       .expect(401)
 
@@ -62,7 +62,7 @@ describe('DELETE /api/v1/tasks/:id', () => {
 
   it('Should return unauthorized when token is missing', async () => {
     const res = await supertest(testServer)
-      .delete(`/api/v1/tasks/1000000`)
+      .delete(`/api/v1/restaurants/1000000`)
       .expect(401)
 
     expect(res.body.code).equals(30002)

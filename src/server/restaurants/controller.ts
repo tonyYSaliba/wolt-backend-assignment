@@ -13,9 +13,9 @@ export class TaskController {
 
   public async get(ctx: Context) {
     const authUser: AuthUser = ctx.state.user
-    const task = await this.manager.find(authUser.id, ctx.params.id)
+    const restaurant = await this.manager.find(authUser.id, ctx.params.id)
 
-    ctx.body = new TaskModel(task)
+    ctx.body = new TaskModel(restaurant)
     ctx.status = 200
   }
 
@@ -23,36 +23,36 @@ export class TaskController {
     const authUser: AuthUser = ctx.state.user
     const limit = isNaN(ctx.query.limit) ? 10 : parseInt(ctx.query.limit, 10)
     const offset = isNaN(ctx.query.offset) ? 0 : parseInt(ctx.query.offset, 10)
-    const tasks = await this.manager.findUserTasks(authUser.id, limit, offset)
+    const restaurants = await this.manager.findUserTasks(authUser.id, limit, offset)
 
-    ctx.body = tasks.map((t: Restaurant) => new TaskModel(t))
+    ctx.body = restaurants.map((t: Restaurant) => new TaskModel(t))
     ctx.status = 200
   }
 
   public async create(ctx: Context) {
     const authUser: AuthUser = ctx.state.user
-    const task: Restaurant = ctx.request.body
+    const restaurant: Restaurant = ctx.request.body
 
-    task.userId = authUser.id
-    task.done = false
+    restaurant.userId = authUser.id
+    restaurant.done = false
 
-    const newTask = await this.manager.create(task)
+    const newTask = await this.manager.create(restaurant)
 
     ctx.body = new TaskModel(newTask)
     ctx.status = 201
-    ctx.set('location', `/api/v1/tasks/${newTask.id}`)
+    ctx.set('location', `/api/v1/restaurants/${newTask.id}`)
   }
 
   public async update(ctx: Context) {
     const taskDto = ctx.request.body
     const authUser: AuthUser = ctx.state.user
-    const task = await this.manager.find(authUser.id, ctx.params.id)
+    const restaurant = await this.manager.find(authUser.id, ctx.params.id)
 
-    task.name = taskDto.name
-    task.description = taskDto.description
-    task.done = taskDto.done
+    restaurant.name = taskDto.name
+    restaurant.description = taskDto.description
+    restaurant.done = taskDto.done
 
-    const updatedTask = await this.manager.update(task)
+    const updatedTask = await this.manager.update(restaurant)
 
     ctx.body = new TaskModel(updatedTask)
     ctx.status = 200

@@ -3,7 +3,7 @@ import { NotFoundError } from '../errors'
 import { MySql } from '../lib/database'
 
 export class TaskRepository {
-  private readonly TABLE: string = 'task'
+  private readonly TABLE: string = 'restaurant'
   private db: MySql
 
   constructor(db: MySql) {
@@ -42,40 +42,40 @@ export class TaskRepository {
     return results.map((r: any) => this.transform(r))
   }
 
-  public async insert(task: Restaurant): Promise<Restaurant> {
-    task.created = new Date()
-    task.updated = new Date()
+  public async insert(restaurant: Restaurant): Promise<Restaurant> {
+    restaurant.created = new Date()
+    restaurant.updated = new Date()
 
     const conn = await this.db.getConnection()
     const result = await conn.table(this.TABLE).insert({
-      name: task.name,
-      description: task.description,
-      done: task.done,
-      created: task.created,
-      updated: task.updated,
-      user_id: task.userId
+      name: restaurant.name,
+      description: restaurant.description,
+      done: restaurant.done,
+      created: restaurant.created,
+      updated: restaurant.updated,
+      user_id: restaurant.userId
     })
 
-    task.id = result[0]
+    restaurant.id = result[0]
 
-    return task
+    return restaurant
   }
 
-  public async update(task: Restaurant): Promise<Restaurant> {
-    task.updated = new Date()
+  public async update(restaurant: Restaurant): Promise<Restaurant> {
+    restaurant.updated = new Date()
 
     const conn = await this.db.getConnection()
 
     await conn
       .table(this.TABLE)
       .update({
-        name: task.name,
-        description: task.description,
-        done: task.done
+        name: restaurant.name,
+        description: restaurant.description,
+        done: restaurant.done
       })
-      .where({ user_id: task.userId, id: task.id })
+      .where({ user_id: restaurant.userId, id: restaurant.id })
 
-    return task
+    return restaurant
   }
 
   public async delete(userId: number, taskId: number): Promise<void> {

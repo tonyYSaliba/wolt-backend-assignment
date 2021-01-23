@@ -14,11 +14,11 @@ export interface ServiceContainer {
     authenticator: Authenticator
   }
   repositories: {
-    task: TaskRepository
+    restaurant: TaskRepository
     user: UserRepository
   }
   managers: {
-    task: TaskManager
+    restaurant: TaskManager
     user: UserManager
   }
 }
@@ -38,11 +38,11 @@ export function createContainer(db: MySql, logger: Logger): ServiceContainer {
       authenticator
     },
     repositories: {
-      task: taskRepo,
+      restaurant: taskRepo,
       user: userRepo
     },
     managers: {
-      task: new TaskManager(taskRepo),
+      restaurant: new TaskManager(taskRepo),
       user: new UserManager(userRepo, hasher, authenticator)
     }
   }

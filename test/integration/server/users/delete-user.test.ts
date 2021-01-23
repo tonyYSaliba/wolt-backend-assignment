@@ -10,7 +10,7 @@ import {
 
 describe('DELETE /api/v1/users/:id', () => {
   beforeEach(async () => {
-    await truncateTables(['task', 'user'])
+    await truncateTables(['restaurant', 'user'])
   })
 
   it('Should delete a user', async () => {
@@ -60,9 +60,9 @@ describe('DELETE /api/v1/users/:id', () => {
     expect(users.length).eql(1)
     expect(users[0].email).eql('god@gmail.com')
 
-    const tasks = await conn.from('task').count()
+    const restaurants = await conn.from('restaurant').count()
 
-    expect(tasks[0]['count(*)']).eql(0)
+    expect(restaurants[0]['count(*)']).eql(0)
   })
 
   it('Should return not allowed error', async () => {

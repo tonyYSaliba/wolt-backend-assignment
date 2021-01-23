@@ -9,8 +9,8 @@ import { TaskController } from './controller'
 import * as validators from './validators'
 
 export function init(server: Koa, container: ServiceContainer) {
-  const router = new Router({ prefix: '/api/v1/tasks' })
-  const controller = new TaskController(container.managers.task)
+  const router = new Router({ prefix: '/api/v1/restaurants' })
+  const controller = new TaskController(container.managers.restaurant)
 
   router.get(
     '/:id',

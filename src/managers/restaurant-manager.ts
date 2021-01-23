@@ -20,12 +20,12 @@ export class TaskManager {
     return this.repo.findByUser(userId, limit, offset)
   }
 
-  public create(task: Restaurant): Promise<Restaurant> {
-    return this.repo.insert(task)
+  public create(restaurant: Restaurant): Promise<Restaurant> {
+    return this.repo.insert(restaurant)
   }
 
-  public update(task: Restaurant): Promise<Restaurant> {
-    return this.repo.update(task)
+  public update(restaurant: Restaurant): Promise<Restaurant> {
+    return this.repo.update(restaurant)
   }
 
   public delete(userId: number, taskId: number): Promise<void> {

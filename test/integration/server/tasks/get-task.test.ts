@@ -8,11 +8,11 @@ import {
   testServer
 } from '../../server-utils'
 
-describe('GET /api/v1/tasks/:id', () => {
+describe('GET /api/v1/restaurants/:id', () => {
   let token: string
 
   before(async () => {
-    await truncateTables(['task', 'user'])
+    await truncateTables(['restaurant', 'user'])
 
     const user = {
       email: 'dude@gmail.com',
@@ -25,16 +25,16 @@ describe('GET /api/v1/tasks/:id', () => {
     token = await getLoginToken('dude@gmail.com', 'secret')
   })
 
-  it('Should return a single task', async () => {
-    const task = {
+  it('Should return a single restaurant', async () => {
+    const restaurant = {
       name: 'Clean Room',
       description: 'Mom said that I need to clean my room.'
     }
 
-    const createdTask = await createTaskTest(task, token)
+    const createdTask = await createTaskTest(restaurant, token)
 
     const res = await supertest(testServer)
-      .get(`/api/v1/tasks/${createdTask.id}`)
+      .get(`/api/v1/restaurants/${createdTask.id}`)
       .set('Authorization', token)
       .expect(200)
 
@@ -45,16 +45,16 @@ describe('GET /api/v1/tasks/:id', () => {
     })
   })
 
-  it('Should return 404 when task does not exist', async () => {
+  it('Should return 404 when restaurant does not exist', async () => {
     await supertest(testServer)
-      .get(`/api/v1/tasks/111111111`)
+      .get(`/api/v1/restaurants/111111111`)
       .set('Authorization', token)
       .expect(404)
   })
 
   it('Should return unauthorized when token is not valid', async () => {
     const res = await supertest(testServer)
-      .get('/api/v1/tasks/1')
+      .get('/api/v1/restaurants/1')
       .set('Authorization', 'wrong token')
       .expect(401)
 
@@ -63,7 +63,7 @@ describe('GET /api/v1/tasks/:id', () => {
 
   it('Should return unauthorized when token is missing', async () => {
     const res = await supertest(testServer)
-      .get('/api/v1/tasks/1')
+      .get('/api/v1/restaurants/1')
       .expect(401)
 
     expect(res.body.code).equals(30002)

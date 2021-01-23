@@ -13,12 +13,12 @@ export class TaskModel {
   public created: Date
   public updated: Date
 
-  constructor(task: Restaurant) {
-    this.id = task.id
-    this.name = task.name
-    this.description = task.description
-    this.done = task.done
-    this.created = task.created
-    this.updated = task.updated
+  constructor(restaurant: Restaurant) {
+    this.id = restaurant.id
+    this.name = restaurant.name
+    this.description = restaurant.description
+    this.done = restaurant.done
+    this.created = restaurant.created
+    this.updated = restaurant.updated
   }
 }

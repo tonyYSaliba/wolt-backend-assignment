@@ -3,11 +3,11 @@ import * as supertest from 'supertest'
 import { truncateTables } from '../../database-utils'
 import { createUserTest, getLoginToken, testServer } from '../../server-utils'
 
-describe('POST /api/v1/tasks', () => {
+describe('POST /api/v1/restaurants', () => {
   let token: string
 
   before(async () => {
-    await truncateTables(['task', 'user'])
+    await truncateTables(['restaurant', 'user'])
 
     const user = {
       email: 'dude@gmail.com',
@@ -20,19 +20,19 @@ describe('POST /api/v1/tasks', () => {
     token = await getLoginToken('dude@gmail.com', 'secret')
   })
 
-  it('Should create a task and return 201', async () => {
-    const task = {
+  it('Should create a restaurant and return 201', async () => {
+    const restaurant = {
       name: 'Do homework',
       description: 'Exercise 1 and 2'
     }
 
     const res = await supertest(testServer)
-      .post('/api/v1/tasks')
+      .post('/api/v1/restaurants')
       .set('Authorization', token)
-      .send(task)
+      .send(restaurant)
       .expect(201)
 
-    expect(res.header.location).equals(`/api/v1/tasks/${res.body.id}`)
+    expect(res.header.location).equals(`/api/v1/restaurants/${res.body.id}`)
     expect(res.body).include({
       name: 'Do homework',
       description: 'Exercise 1 and 2',
@@ -41,14 +41,14 @@ describe('POST /api/v1/tasks', () => {
   })
 
   it('Should return 400 when missing body data', async () => {
-    const task = {
+    const restaurant = {
       name: 'Do something'
     }
 
     const res = await supertest(testServer)
-      .post('/api/v1/tasks')
+      .post('/api/v1/restaurants')
       .set('Authorization', token)
-      .send(task)
+      .send(restaurant)
       .expect(400)
 
     expect(res.body.code).equals(30001)
@@ -58,7 +58,7 @@ describe('POST /api/v1/tasks', () => {
 
   it('Should return unauthorized when token is not valid', async () => {
     const res = await supertest(testServer)
-      .post('/api/v1/tasks')
+      .post('/api/v1/restaurants')
       .set('Authorization', 'wrong token')
       .expect(401)
 
@@ -67,7 +67,7 @@ describe('POST /api/v1/tasks', () => {
 
   it('Should return unauthorized when token is missing', async () => {
     const res = await supertest(testServer)
-      .post('/api/v1/tasks')
+      .post('/api/v1/restaurants')
       .expect(401)
 
     expect(res.body.code).equals(30002)

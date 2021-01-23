@@ -8,11 +8,11 @@ import {
   testServer
 } from '../../server-utils'
 
-describe('PUT /api/v1/tasks/:id', () => {
+describe('PUT /api/v1/restaurants/:id', () => {
   let token: string
 
   before(async () => {
-    await truncateTables(['task', 'user'])
+    await truncateTables(['restaurant', 'user'])
 
     const user = {
       email: 'dude@gmail.com',
@@ -26,17 +26,17 @@ describe('PUT /api/v1/tasks/:id', () => {
   })
 
   beforeEach(async () => {
-    await truncateTables(['task'])
+    await truncateTables(['restaurant'])
   })
 
-  it('Should update a task', async () => {
-    const task = await createTaskTest(
+  it('Should update a restaurant', async () => {
+    const restaurant = await createTaskTest(
       { name: 'Do homework', description: 'Exercise 1 and 2' },
       token
     )
 
     const res = await supertest(testServer)
-      .put(`/api/v1/tasks/${task.id}`)
+      .put(`/api/v1/restaurants/${restaurant.id}`)
       .set('Authorization', token)
       .send({ name: 'Do TPC', description: 'Some job', done: true })
       .expect(200)
@@ -49,13 +49,13 @@ describe('PUT /api/v1/tasks/:id', () => {
   })
 
   it('Should return 400 when missing body data', async () => {
-    const task = await createTaskTest(
+    const restaurant = await createTaskTest(
       { name: 'Do homework', description: 'Exercise 1 and 2' },
       token
     )
 
     const res = await supertest(testServer)
-      .put(`/api/v1/tasks/${task.id}`)
+      .put(`/api/v1/restaurants/${restaurant.id}`)
       .set('Authorization', token)
       .send({ name: 'Do TPC', description: 'Some job' })
       .expect(400)
@@ -67,7 +67,7 @@ describe('PUT /api/v1/tasks/:id', () => {
 
   it('Should return unauthorized when token is not valid', async () => {
     const res = await supertest(testServer)
-      .put('/api/v1/tasks/1')
+      .put('/api/v1/restaurants/1')
       .set('Authorization', 'wrong token')
       .expect(401)
 
@@ -76,7 +76,7 @@ describe('PUT /api/v1/tasks/:id', () => {
 
   it('Should return unauthorized when token is missing', async () => {
     const res = await supertest(testServer)
-      .put('/api/v1/tasks/1')
+      .put('/api/v1/restaurants/1')
       .expect(401)
 
     expect(res.body.code).equals(30002)

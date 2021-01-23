@@ -17,7 +17,7 @@ reports
 .nyc_output
 
 
-# Grunt intermediate storage (http://gruntjs.com/creating-plugins#storing-task-files)
+# Grunt intermediate storage (http://gruntjs.com/creating-plugins#storing-restaurant-files)
 .grunt
 
 # node-waf configuration

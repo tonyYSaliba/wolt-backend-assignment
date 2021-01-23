@@ -87,7 +87,7 @@ export class UserRepository {
 
     try {
       await trx
-        .from('task')
+        .from('restaurant')
         .delete()
         .where({ user_id: userId })
 

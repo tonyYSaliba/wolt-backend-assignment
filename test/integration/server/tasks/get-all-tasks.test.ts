@@ -8,11 +8,11 @@ import {
   testServer
 } from '../../server-utils'
 
-describe('GET /api/v1/tasks', () => {
+describe('GET /api/v1/restaurants', () => {
   let token: string
 
   before(async () => {
-    await truncateTables(['task', 'user'])
+    await truncateTables(['restaurant', 'user'])
 
     const user = {
       email: 'dude@gmail.com',
@@ -25,7 +25,7 @@ describe('GET /api/v1/tasks', () => {
     token = await getLoginToken('dude@gmail.com', 'secret')
   })
 
-  it('Should return a list of tasks', async () => {
+  it('Should return a list of restaurants', async () => {
     const task1 = {
       name: 'Clean Room',
       description: 'Mom said that I need to clean my room.'
@@ -40,7 +40,7 @@ describe('GET /api/v1/tasks', () => {
     await createTaskTest(task2, token)
 
     const res = await supertest(testServer)
-      .get('/api/v1/tasks')
+      .get('/api/v1/restaurants')
       .set('Authorization', token)
       .expect(200)
 
@@ -51,7 +51,7 @@ describe('GET /api/v1/tasks', () => {
 
   it('Should return unauthorized when token is not valid', async () => {
     const res = await supertest(testServer)
-      .get(`/api/v1/tasks`)
+      .get(`/api/v1/restaurants`)
       .set('Authorization', 'wrong token')
       .expect(401)
 
@@ -60,7 +60,7 @@ describe('GET /api/v1/tasks', () => {
 
   it('Should return unauthorized when token is missing', async () => {
     const res = await supertest(testServer)
-      .get(`/api/v1/tasks`)
+      .get(`/api/v1/restaurants`)
       .expect(401)
 
     expect(res.body.code).equals(30002)
