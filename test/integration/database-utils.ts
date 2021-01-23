@@ -2,7 +2,7 @@ import { Role } from '../../src/lib/authentication'
 import { Configuration, MySql } from '../../src/lib/database'
 
 const testMysqlConfig: Configuration = {
-  database: 'task_manager',
+  database: 'discovery',
   host: process.env.DB_HOST || '127.0.0.1',
   port: Number(process.env.DB_PORT) || 3306,
   user: process.env.DB_USER || 'root',

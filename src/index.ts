@@ -12,7 +12,7 @@ export async function init() {
     logger.info('Starting HTTP server')
 
     const db = new MySql({
-      database: 'task_manager',
+      database: 'discovery',
       host: process.env.DB_HOST,
       port: Number(process.env.DB_PORT) || 3306,
       user: process.env.DB_USER,
