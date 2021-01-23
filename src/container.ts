@@ -24,7 +24,7 @@ export interface ServiceContainer {
 }
 
 export function createContainer(db: MySql, logger: Logger): ServiceContainer {
-  const taskRepo = new TaskRepository(db)
+  const restaurantRepo = new TaskRepository(db)
   const userRepo = new UserRepository(db)
   const hasher = new BCryptHasher()
   const authenticator = new JWTAuthenticator(userRepo)
@@ -38,11 +38,11 @@ export function createContainer(db: MySql, logger: Logger): ServiceContainer {
       authenticator
     },
     repositories: {
-      restaurant: taskRepo,
+      restaurant: restaurantRepo,
       user: userRepo
     },
     managers: {
-      restaurant: new RestaurantManager(taskRepo),
+      restaurant: new RestaurantManager(restaurantRepo),
       user: new UserManager(userRepo, hasher, authenticator)
     }
   }
