@@ -5,12 +5,12 @@ import * as Router from 'koa-router'
 import { ServiceContainer } from '../../container'
 import { Role } from '../../lib/authentication'
 import * as middleware from '../middlewares'
-import { TaskController } from './controller'
+import { RestaurantController } from './controller'
 import * as validators from './validators'
 
 export function init(server: Koa, container: ServiceContainer) {
   const router = new Router({ prefix: '/api/v1/restaurants' })
-  const controller = new TaskController(container.managers.restaurant)
+  const controller = new RestaurantController(container.managers.restaurant)
 
   router.get(
     '/:id',
@@ -31,7 +31,7 @@ export function init(server: Koa, container: ServiceContainer) {
     bodyParser(),
     middleware.authentication(container.lib.authenticator),
     middleware.authorization([Role.user, Role.admin]),
-    middleware.validate({ request: { body: validators.createTask } }),
+    middleware.validate({ request: { body: validators.createRestaurant } }),
     controller.create.bind(controller)
   )
 
@@ -43,7 +43,7 @@ export function init(server: Koa, container: ServiceContainer) {
     middleware.validate({
       params: { id: Joi.number().required() },
       request: {
-        body: validators.updateTask
+        body: validators.updateRestaurant
       }
     }),
     controller.update.bind(controller)

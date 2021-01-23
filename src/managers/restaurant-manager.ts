@@ -1,10 +1,10 @@
 import { Restaurant } from '../entities'
-import { TaskRepository } from '../repositories'
+import { RestaurantRepository } from '../repositories'
 
 export class RestaurantManager {
-  private repo: TaskRepository
+  private repo: RestaurantRepository
 
-  constructor(repo: TaskRepository) {
+  constructor(repo: RestaurantRepository) {
     this.repo = repo
   }
 
@@ -12,7 +12,7 @@ export class RestaurantManager {
     return this.repo.find(userId, id)
   }
 
-  public async findUserTasks(
+  public async findUserRestaurants(
     userId: number,
     limit: number,
     offset: number
@@ -28,7 +28,7 @@ export class RestaurantManager {
     return this.repo.update(restaurant)
   }
 
-  public delete(userId: number, taskId: number): Promise<void> {
-    return this.repo.delete(userId, taskId)
+  public delete(userId: number, restaurantId: number): Promise<void> {
+    return this.repo.delete(userId, restaurantId)
   }
 }

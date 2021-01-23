@@ -2,7 +2,7 @@ import * as pino from 'pino'
 import * as supertest from 'supertest'
 import { createContainer } from '../../src/container'
 import { createServer } from '../../src/server'
-import { CreateTask, TaskModel } from '../../src/server/restaurants/model'
+import { CreateRestaurant, RestaurantModel } from '../../src/server/restaurants/model'
 import { CreateUser, UserModel } from '../../src/server/users/model'
 import { database } from './database-utils'
 
@@ -26,10 +26,10 @@ export function shuttingDown(): void {
   container.health.shuttingDown()
 }
 
-export async function createTaskTest(
-  restaurant: CreateTask,
+export async function createRestaurantTest(
+  restaurant: CreateRestaurant,
   token: string
-): Promise<TaskModel> {
+): Promise<RestaurantModel> {
   const res = await supertest(testServer)
     .post('/api/v1/restaurants')
     .set('Authorization', token)

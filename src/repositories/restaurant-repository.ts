@@ -2,7 +2,7 @@ import { Restaurant } from '../entities'
 import { NotFoundError } from '../errors'
 import { MySql } from '../lib/database'
 
-export class TaskRepository {
+export class RestaurantRepository {
   private readonly TABLE: string = 'restaurant'
   private db: MySql
 
@@ -78,13 +78,13 @@ export class TaskRepository {
     return restaurant
   }
 
-  public async delete(userId: number, taskId: number): Promise<void> {
+  public async delete(userId: number, restaurantId: number): Promise<void> {
     const conn = await this.db.getConnection()
 
     const result = await conn
       .from(this.TABLE)
       .delete()
-      .where({ id: taskId, user_id: userId })
+      .where({ id: restaurantId, user_id: userId })
 
     if (result === 0) {
       throw new NotFoundError('Restaurant does not exist')

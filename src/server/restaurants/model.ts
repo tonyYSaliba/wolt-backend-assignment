@@ -1,11 +1,11 @@
 import { Restaurant } from '../../entities'
 
-export interface CreateTask {
+export interface CreateRestaurant {
   name: string
   description: string
 }
 
-export class TaskModel {
+export class RestaurantModel {
   public id?: number
   public name: string
   public description: string

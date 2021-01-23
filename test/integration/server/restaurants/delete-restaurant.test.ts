@@ -2,13 +2,13 @@ import { expect } from 'chai'
 import * as supertest from 'supertest'
 import { truncateTables } from '../../database-utils'
 import {
-  createTaskTest,
+  createRestaurantTest,
   createUserTest,
   getLoginToken,
   testServer
 } from '../../server-utils'
 
-describe('GET /api/v1/restaurants/:id', () => {
+describe('DELETE /api/v1/restaurants/:id', () => {
   let token: string
 
   before(async () => {
@@ -25,36 +25,35 @@ describe('GET /api/v1/restaurants/:id', () => {
     token = await getLoginToken('dude@gmail.com', 'secret')
   })
 
-  it('Should return a single restaurant', async () => {
+  it('Should delete a restaurant and return 204', async () => {
     const restaurant = {
-      name: 'Clean Room',
-      description: 'Mom said that I need to clean my room.'
+      name: 'Do Something',
+      description: 'Some random description'
     }
 
-    const createdTask = await createTaskTest(restaurant, token)
+    const createdRestaurant = await createRestaurantTest(restaurant, token)
 
-    const res = await supertest(testServer)
-      .get(`/api/v1/restaurants/${createdTask.id}`)
+    await supertest(testServer)
+      .delete(`/api/v1/restaurants/${createdRestaurant.id}`)
       .set('Authorization', token)
-      .expect(200)
+      .expect(204)
 
-    expect(res.body).includes({
-      name: 'Clean Room',
-      description: 'Mom said that I need to clean my room.',
-      done: false
-    })
+    await supertest(testServer)
+      .get(`/api/v1/restaurants/${createdRestaurant.id}`)
+      .set('Authorization', token)
+      .expect(404)
   })
 
   it('Should return 404 when restaurant does not exist', async () => {
     await supertest(testServer)
-      .get(`/api/v1/restaurants/111111111`)
+      .delete(`/api/v1/restaurants/1000000`)
       .set('Authorization', token)
       .expect(404)
   })
 
   it('Should return unauthorized when token is not valid', async () => {
     const res = await supertest(testServer)
-      .get('/api/v1/restaurants/1')
+      .delete(`/api/v1/restaurants/1000000`)
       .set('Authorization', 'wrong token')
       .expect(401)
 
@@ -63,7 +62,7 @@ describe('GET /api/v1/restaurants/:id', () => {
 
   it('Should return unauthorized when token is missing', async () => {
     const res = await supertest(testServer)
-      .get('/api/v1/restaurants/1')
+      .delete(`/api/v1/restaurants/1000000`)
       .expect(401)
 
     expect(res.body.code).equals(30002)

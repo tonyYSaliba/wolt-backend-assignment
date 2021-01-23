@@ -4,7 +4,7 @@ import { MySql } from './lib/database'
 import { BCryptHasher, Hasher } from './lib/hasher'
 import { HealthMonitor } from './lib/health'
 import { RestaurantManager, UserManager } from './managers'
-import { TaskRepository, UserRepository } from './repositories'
+import { RestaurantRepository, UserRepository } from './repositories'
 
 export interface ServiceContainer {
   health: HealthMonitor
@@ -14,7 +14,7 @@ export interface ServiceContainer {
     authenticator: Authenticator
   }
   repositories: {
-    restaurant: TaskRepository
+    restaurant: RestaurantRepository
     user: UserRepository
   }
   managers: {
@@ -24,7 +24,7 @@ export interface ServiceContainer {
 }
 
 export function createContainer(db: MySql, logger: Logger): ServiceContainer {
-  const restaurantRepo = new TaskRepository(db)
+  const restaurantRepo = new RestaurantRepository(db)
   const userRepo = new UserRepository(db)
   const hasher = new BCryptHasher()
   const authenticator = new JWTAuthenticator(userRepo)

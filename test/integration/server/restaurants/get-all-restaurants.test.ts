@@ -2,7 +2,7 @@ import { expect } from 'chai'
 import * as supertest from 'supertest'
 import { truncateTables } from '../../database-utils'
 import {
-  createTaskTest,
+  createRestaurantTest,
   createUserTest,
   getLoginToken,
   testServer
@@ -26,18 +26,18 @@ describe('GET /api/v1/restaurants', () => {
   })
 
   it('Should return a list of restaurants', async () => {
-    const task1 = {
+    const restaurant1 = {
       name: 'Clean Room',
       description: 'Mom said that I need to clean my room.'
     }
 
-    const task2 = {
+    const restaurant2 = {
       name: 'Do Homework',
       description: 'Math homework.'
     }
 
-    await createTaskTest(task1, token)
-    await createTaskTest(task2, token)
+    await createRestaurantTest(restaurant1, token)
+    await createRestaurantTest(restaurant2, token)
 
     const res = await supertest(testServer)
       .get('/api/v1/restaurants')

@@ -2,7 +2,7 @@ import { expect } from 'chai'
 import * as supertest from 'supertest'
 import { truncateTables } from '../../database-utils'
 import {
-  createTaskTest,
+  createRestaurantTest,
   createUserTest,
   getLoginToken,
   testServer
@@ -30,7 +30,7 @@ describe('PUT /api/v1/restaurants/:id', () => {
   })
 
   it('Should update a restaurant', async () => {
-    const restaurant = await createTaskTest(
+    const restaurant = await createRestaurantTest(
       { name: 'Do homework', description: 'Exercise 1 and 2' },
       token
     )
@@ -49,7 +49,7 @@ describe('PUT /api/v1/restaurants/:id', () => {
   })
 
   it('Should return 400 when missing body data', async () => {
-    const restaurant = await createTaskTest(
+    const restaurant = await createRestaurantTest(
       { name: 'Do homework', description: 'Exercise 1 and 2' },
       token
     )

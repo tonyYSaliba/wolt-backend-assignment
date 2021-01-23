@@ -2,7 +2,7 @@ import { expect } from 'chai'
 import * as supertest from 'supertest'
 import { database, setAdminMode, truncateTables } from '../../database-utils'
 import {
-  createTaskTest,
+  createRestaurantTest,
   createUserTest,
   getLoginToken,
   testServer
@@ -32,7 +32,7 @@ describe('DELETE /api/v1/users/:id', () => {
     })
 
     const userToken = await getLoginToken('user@gmail.com', 'test')
-    await createTaskTest(
+    await createRestaurantTest(
       {
         name: 'Do Something',
         description: 'Some random description'
@@ -40,7 +40,7 @@ describe('DELETE /api/v1/users/:id', () => {
       userToken
     )
 
-    await createTaskTest(
+    await createRestaurantTest(
       {
         name: 'Do Something',
         description: 'Some random description'
