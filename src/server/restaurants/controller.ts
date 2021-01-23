@@ -1,13 +1,13 @@
 import { Context } from 'koa'
 import { Restaurant } from '../../entities'
 import { AuthUser } from '../../lib/authentication'
-import { TaskManager } from '../../managers'
+import { RestaurantManager } from '../../managers'
 import { TaskModel } from './model'
 
 export class TaskController {
-  private manager: TaskManager
+  private manager: RestaurantManager
 
-  constructor(manager: TaskManager) {
+  constructor(manager: RestaurantManager) {
     this.manager = manager
   }
 

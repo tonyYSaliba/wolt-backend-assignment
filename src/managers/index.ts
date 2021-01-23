@@ -1,2 +1,2 @@
 export { UserManager } from './user-manager'
-export { TaskManager } from './restaurant-manager'
+export { RestaurantManager } from './restaurant-manager'

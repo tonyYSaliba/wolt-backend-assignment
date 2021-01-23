@@ -1,7 +1,7 @@
 import { Restaurant } from '../entities'
 import { TaskRepository } from '../repositories'
 
-export class TaskManager {
+export class RestaurantManager {
   private repo: TaskRepository
 
   constructor(repo: TaskRepository) {

@@ -3,7 +3,7 @@ import { Authenticator, JWTAuthenticator } from './lib/authentication'
 import { MySql } from './lib/database'
 import { BCryptHasher, Hasher } from './lib/hasher'
 import { HealthMonitor } from './lib/health'
-import { TaskManager, UserManager } from './managers'
+import { RestaurantManager, UserManager } from './managers'
 import { TaskRepository, UserRepository } from './repositories'
 
 export interface ServiceContainer {
@@ -18,7 +18,7 @@ export interface ServiceContainer {
     user: UserRepository
   }
   managers: {
-    restaurant: TaskManager
+    restaurant: RestaurantManager
     user: UserManager
   }
 }
@@ -42,7 +42,7 @@ export function createContainer(db: MySql, logger: Logger): ServiceContainer {
       user: userRepo
     },
     managers: {
-      restaurant: new TaskManager(taskRepo),
+      restaurant: new RestaurantManager(taskRepo),
       user: new UserManager(userRepo, hasher, authenticator)
     }
   }
