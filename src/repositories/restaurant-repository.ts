@@ -48,12 +48,15 @@ export class RestaurantRepository {
 
     const conn = await this.db.getConnection()
     const result = await conn.table(this.TABLE).insert({
+      blurhash: restaurant.blurhash,
+      longitude: restaurant.longitude,
+      latitude: restaurant.latitude,
       name: restaurant.name,
-      description: restaurant.description,
-      done: restaurant.done,
+      online: restaurant.online,
+      launchDate: restaurant.launchDate,
+      popularity: restaurant.popularity,
       created: restaurant.created,
-      updated: restaurant.updated,
-      user_id: restaurant.userId
+      updated: restaurant.updated
     })
 
     restaurant.id = result[0]
@@ -69,22 +72,26 @@ export class RestaurantRepository {
     await conn
       .table(this.TABLE)
       .update({
+        blurhash: restaurant.blurhash,
+        longitude: restaurant.longitude,
+        latitude: restaurant.latitude,
         name: restaurant.name,
-        description: restaurant.description,
-        done: restaurant.done
+        online: restaurant.online,
+        launchDate: restaurant.launchDate,
+        popularity: restaurant.popularity
       })
-      .where({ user_id: restaurant.userId, id: restaurant.id })
+      .where({ id: restaurant.id })
 
     return restaurant
   }
 
-  public async delete(userId: number, restaurantId: number): Promise<void> {
+  public async delete(restaurantId: number): Promise<void> {
     const conn = await this.db.getConnection()
 
     const result = await conn
       .from(this.TABLE)
       .delete()
-      .where({ id: restaurantId, user_id: userId })
+      .where({ id: restaurantId })
 
     if (result === 0) {
       throw new NotFoundError('Restaurant does not exist')
@@ -94,10 +101,13 @@ export class RestaurantRepository {
   private transform(row: any): Restaurant {
     return {
       id: row.id,
+      blurhash: row.blurhash,
+      longitude: row.longitude,
+      latitude: row.latitude,
       name: row.name,
-      description: row.description,
-      userId: row.user_id,
-      done: row.done === 1,
+      online: row.online === 1,
+      launchDate: row.launchDate,
+      popularity: row.popularity,
       created: row.created,
       updated: row.updated
     }

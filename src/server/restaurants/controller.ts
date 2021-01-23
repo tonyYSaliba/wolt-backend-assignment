@@ -33,8 +33,7 @@ export class RestaurantController {
     const authUser: AuthUser = ctx.state.user
     const restaurant: Restaurant = ctx.request.body
 
-    restaurant.userId = authUser.id
-    restaurant.done = false
+    console.log(authUser.id);
 
     const newRestaurant = await this.manager.create(restaurant)
 
@@ -48,9 +47,15 @@ export class RestaurantController {
     const authUser: AuthUser = ctx.state.user
     const restaurant = await this.manager.find(authUser.id, ctx.params.id)
 
+    restaurant.blurhash = restaurantDto.blurhash
+    restaurant.longitude = restaurantDto.longitude
+    restaurant.latitude = restaurantDto.latitude
     restaurant.name = restaurantDto.name
-    restaurant.description = restaurantDto.description
-    restaurant.done = restaurantDto.done
+    restaurant.online = restaurantDto.online
+    restaurant.launchDate = restaurantDto.launchDate
+    restaurant.popularity = restaurantDto.popularity
+    restaurant.created = restaurantDto.created
+    restaurant.updated = restaurantDto.updated
 
     const updatedRestaurant = await this.manager.update(restaurant)
 
