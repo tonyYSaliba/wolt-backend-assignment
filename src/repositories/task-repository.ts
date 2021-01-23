@@ -1,4 +1,4 @@
-import { Task } from '../entities'
+import { Restaurant } from '../entities'
 import { NotFoundError } from '../errors'
 import { MySql } from '../lib/database'
 
@@ -10,7 +10,7 @@ export class TaskRepository {
     this.db = db
   }
 
-  public async find(userId: number, id: number): Promise<Task> {
+  public async find(userId: number, id: number): Promise<Restaurant> {
     const conn = await this.db.getConnection()
     const row = await conn
       .select()
@@ -19,7 +19,7 @@ export class TaskRepository {
       .first()
 
     if (!row) {
-      throw new NotFoundError('Task does not exist')
+      throw new NotFoundError('Restaurant does not exist')
     }
 
     return this.transform(row)
@@ -29,7 +29,7 @@ export class TaskRepository {
     userId: number,
     limit: number,
     offset: number
-  ): Promise<Task[]> {
+  ): Promise<Restaurant[]> {
     const conn = await this.db.getConnection()
     const results = await conn
       .select()
@@ -42,7 +42,7 @@ export class TaskRepository {
     return results.map((r: any) => this.transform(r))
   }
 
-  public async insert(task: Task): Promise<Task> {
+  public async insert(task: Restaurant): Promise<Restaurant> {
     task.created = new Date()
     task.updated = new Date()
 
@@ -61,7 +61,7 @@ export class TaskRepository {
     return task
   }
 
-  public async update(task: Task): Promise<Task> {
+  public async update(task: Restaurant): Promise<Restaurant> {
     task.updated = new Date()
 
     const conn = await this.db.getConnection()
@@ -87,11 +87,11 @@ export class TaskRepository {
       .where({ id: taskId, user_id: userId })
 
     if (result === 0) {
-      throw new NotFoundError('Task does not exist')
+      throw new NotFoundError('Restaurant does not exist')
     }
   }
 
-  private transform(row: any): Task {
+  private transform(row: any): Restaurant {
     return {
       id: row.id,
       name: row.name,

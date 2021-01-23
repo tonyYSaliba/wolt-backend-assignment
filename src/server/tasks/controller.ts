@@ -1,5 +1,5 @@
 import { Context } from 'koa'
-import { Task } from '../../entities'
+import { Restaurant } from '../../entities'
 import { AuthUser } from '../../lib/authentication'
 import { TaskManager } from '../../managers'
 import { TaskModel } from './model'
@@ -25,13 +25,13 @@ export class TaskController {
     const offset = isNaN(ctx.query.offset) ? 0 : parseInt(ctx.query.offset, 10)
     const tasks = await this.manager.findUserTasks(authUser.id, limit, offset)
 
-    ctx.body = tasks.map((t: Task) => new TaskModel(t))
+    ctx.body = tasks.map((t: Restaurant) => new TaskModel(t))
     ctx.status = 200
   }
 
   public async create(ctx: Context) {
     const authUser: AuthUser = ctx.state.user
-    const task: Task = ctx.request.body
+    const task: Restaurant = ctx.request.body
 
     task.userId = authUser.id
     task.done = false

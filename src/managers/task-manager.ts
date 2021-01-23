@@ -1,4 +1,4 @@
-import { Task } from '../entities'
+import { Restaurant } from '../entities'
 import { TaskRepository } from '../repositories'
 
 export class TaskManager {
@@ -8,7 +8,7 @@ export class TaskManager {
     this.repo = repo
   }
 
-  public find(userId: number, id: number): Promise<Task> {
+  public find(userId: number, id: number): Promise<Restaurant> {
     return this.repo.find(userId, id)
   }
 
@@ -16,15 +16,15 @@ export class TaskManager {
     userId: number,
     limit: number,
     offset: number
-  ): Promise<Task[]> {
+  ): Promise<Restaurant[]> {
     return this.repo.findByUser(userId, limit, offset)
   }
 
-  public create(task: Task): Promise<Task> {
+  public create(task: Restaurant): Promise<Restaurant> {
     return this.repo.insert(task)
   }
 
-  public update(task: Task): Promise<Task> {
+  public update(task: Restaurant): Promise<Restaurant> {
     return this.repo.update(task)
   }
 

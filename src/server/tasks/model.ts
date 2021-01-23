@@ -1,4 +1,4 @@
-import { Task } from '../../entities'
+import { Restaurant } from '../../entities'
 
 export interface CreateTask {
   name: string
@@ -13,7 +13,7 @@ export class TaskModel {
   public created: Date
   public updated: Date
 
-  constructor(task: Task) {
+  constructor(task: Restaurant) {
     this.id = task.id
     this.name = task.name
     this.description = task.description

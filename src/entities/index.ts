@@ -1,2 +1,2 @@
 export { User } from './user'
-export { Task } from './task'
+export { Restaurant } from './task'
