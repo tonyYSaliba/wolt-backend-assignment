@@ -8,16 +8,8 @@ export class RestaurantManager {
     this.repo = repo
   }
 
-  public find(userId: number, id: number): Promise<Restaurant> {
-    return this.repo.find(userId, id)
-  }
-
-  public async findUserRestaurants(
-    userId: number,
-    limit: number,
-    offset: number
-  ): Promise<Restaurant[]> {
-    return this.repo.findByUser(userId, limit, offset)
+  public find(id: number): Promise<Restaurant> {
+    return this.repo.find(id)
   }
 
   public create(restaurant: Restaurant): Promise<Restaurant> {
@@ -28,7 +20,7 @@ export class RestaurantManager {
     return this.repo.update(restaurant)
   }
 
-  public delete(userId: number, restaurantId: number): Promise<void> {
-    return this.repo.delete(userId, restaurantId)
+  public delete(restaurantId: number): Promise<void> {
+    return this.repo.delete(restaurantId)
   }
 }
