@@ -12,20 +12,20 @@ export class RestaurantController {
   }
 
   public async get(ctx: Context) {
-    const authUser: AuthUser = ctx.state.user
-    const restaurant = await this.manager.find(authUser.id, ctx.params.id)
+    // const authUser: AuthUser = ctx.state.user
+    const restaurant = await this.manager.find(ctx.params.id)
 
     ctx.body = new RestaurantModel(restaurant)
     ctx.status = 200
   }
 
   public async getAll(ctx: Context) {
-    const authUser: AuthUser = ctx.state.user
-    const limit = isNaN(ctx.query.limit) ? 10 : parseInt(ctx.query.limit, 10)
-    const offset = isNaN(ctx.query.offset) ? 0 : parseInt(ctx.query.offset, 10)
-    const restaurants = await this.manager.findUserRestaurants(authUser.id, limit, offset)
+    // const authUser: AuthUser = ctx.state.user
+    // const limit = isNaN(ctx.query.limit) ? 10 : parseInt(ctx.query.limit, 10)
+    // const offset = isNaN(ctx.query.offset) ? 0 : parseInt(ctx.query.offset, 10)
+    // const restaurants = await this.manager.findUserRestaurants(authUser.id, limit, offset)
 
-    ctx.body = restaurants.map((t: Restaurant) => new RestaurantModel(t))
+    // ctx.body = restaurants.map((t: Restaurant) => new RestaurantModel(t))
     ctx.status = 200
   }
 
@@ -33,7 +33,7 @@ export class RestaurantController {
     const authUser: AuthUser = ctx.state.user
     const restaurant: Restaurant = ctx.request.body
 
-    console.log(authUser.id);
+    console.log(authUser.id)
 
     const newRestaurant = await this.manager.create(restaurant)
 
@@ -44,8 +44,8 @@ export class RestaurantController {
 
   public async update(ctx: Context) {
     const restaurantDto = ctx.request.body
-    const authUser: AuthUser = ctx.state.user
-    const restaurant = await this.manager.find(authUser.id, ctx.params.id)
+    // const authUser: AuthUser = ctx.state.user
+    const restaurant = await this.manager.find(ctx.params.id)
 
     restaurant.blurhash = restaurantDto.blurhash
     restaurant.longitude = restaurantDto.longitude
@@ -64,10 +64,10 @@ export class RestaurantController {
   }
 
   public async delete(ctx: Context) {
-    const authUser: AuthUser = ctx.state.user
+    // const authUser: AuthUser = ctx.state.user
     const id: number = ctx.params.id
 
-    await this.manager.delete(authUser.id, id)
+    await this.manager.delete(id)
 
     ctx.status = 204
   }
