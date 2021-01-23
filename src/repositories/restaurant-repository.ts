@@ -10,12 +10,12 @@ export class RestaurantRepository {
     this.db = db
   }
 
-  public async find(userId: number, id: number): Promise<Restaurant> {
+  public async find(id: number): Promise<Restaurant> {
     const conn = await this.db.getConnection()
     const row = await conn
       .select()
       .from(this.TABLE)
-      .where({ id, user_id: userId })
+      .where({ id })
       .first()
 
     if (!row) {
@@ -23,23 +23,6 @@ export class RestaurantRepository {
     }
 
     return this.transform(row)
-  }
-
-  public async findByUser(
-    userId: number,
-    limit: number,
-    offset: number
-  ): Promise<Restaurant[]> {
-    const conn = await this.db.getConnection()
-    const results = await conn
-      .select()
-      .from(this.TABLE)
-      .where({ user_id: userId })
-      .orderBy('updated', 'DESC')
-      .offset(offset)
-      .limit(limit)
-
-    return results.map((r: any) => this.transform(r))
   }
 
   public async insert(restaurant: Restaurant): Promise<Restaurant> {
