@@ -36,7 +36,9 @@
     "koa-router": "^7.4.0",
     "moment": "^2.24.0",
     "mysql2": "^1.7.0",
-    "pino": "^5.13.3"
+    "pg": "^8.5.1",
+    "pino": "^5.13.3",
+    "postgres": "^1.0.2"
   },
   "devDependencies": {
     "@types/async": "^3.0.1",

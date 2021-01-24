@@ -1,6 +1,6 @@
 import * as pino from 'pino'
 import { createContainer } from './container'
-import { MySql } from './lib/database'
+import { Postgres } from './lib/database'
 import { HealthMonitor } from './lib/health'
 import { AppServer, createServer } from './server'
 
@@ -11,10 +11,10 @@ export async function init() {
     // Starting the HTTP server
     logger.info('Starting HTTP server')
 
-    const db = new MySql({
+    const db = new Postgres({
       database: 'discovery',
       host: process.env.DB_HOST,
-      port: Number(process.env.DB_PORT) || 3306,
+      port: Number(process.env.DB_PORT) || 5432,
       user: process.env.DB_USER,
       password: process.env.DB_PASSWORD,
       debug: process.env.ENV !== 'production'
@@ -42,7 +42,7 @@ export async function init() {
 function registerProcessEvents(
   logger: pino.Logger,
   app: AppServer,
-  db: MySql,
+  db: Postgres,
   health: HealthMonitor
 ) {
   process.on('uncaughtException', (error: Error) => {

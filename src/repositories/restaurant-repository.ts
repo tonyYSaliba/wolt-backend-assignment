@@ -1,12 +1,12 @@
 import { Restaurant } from '../entities'
 import { NotFoundError } from '../errors'
-import { MySql } from '../lib/database'
+import { Postgres } from '../lib/database'
 
 export class RestaurantRepository {
   private readonly TABLE: string = 'restaurant'
-  private db: MySql
+  private db: Postgres
 
-  constructor(db: MySql) {
+  constructor(db: Postgres) {
     this.db = db
   }
 

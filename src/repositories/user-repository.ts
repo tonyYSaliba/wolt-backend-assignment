@@ -1,12 +1,12 @@
 import { User } from '../entities'
 import { NotFoundError, ValidationError } from '../errors'
-import { MySql } from '../lib/database'
+import { Postgres } from '../lib/database'
 
 export class UserRepository {
   private readonly TABLE: string = 'user'
-  private db: MySql
+  private db: Postgres
 
-  constructor(db: MySql) {
+  constructor(db: Postgres) {
     this.db = db
   }
 

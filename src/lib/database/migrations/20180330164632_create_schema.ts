@@ -6,7 +6,7 @@ export function up(db: knex) {
       table.increments('id').primary()
       table.string('email', 64).unique()
       table.string('password', 256).notNullable()
-      table.enum('role', ['user', 'admin']).notNullable()
+      table.enum('role', ['user', 'admin']).notNullable().defaultTo('user')
       table.string('first_name', 64).notNullable()
       table.string('last_name', 64).notNullable()
       table.dateTime('created').notNullable()

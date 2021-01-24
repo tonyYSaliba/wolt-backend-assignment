@@ -11,7 +11,7 @@ export interface Configuration {
   debug: boolean
 }
 
-export class MySql {
+export class Postgres {
   private config: Configuration
   private connection: knex | undefined
   private retryDbConnectionPromise: Promise<knex> | undefined
@@ -59,7 +59,7 @@ export class MySql {
 
   private async createConnection(): Promise<knex> {
     const config: knex.Config = {
-      client: 'mysql2',
+      client: 'pg',
       connection: {
         host: this.config.host,
         port: this.config.port,

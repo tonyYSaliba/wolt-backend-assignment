@@ -1,6 +1,6 @@
 import { Logger } from 'pino'
 import { Authenticator, JWTAuthenticator } from './lib/authentication'
-import { MySql } from './lib/database'
+import { Postgres } from './lib/database'
 import { BCryptHasher, Hasher } from './lib/hasher'
 import { HealthMonitor } from './lib/health'
 import { RestaurantManager, UserManager } from './managers'
@@ -23,7 +23,7 @@ export interface ServiceContainer {
   }
 }
 
-export function createContainer(db: MySql, logger: Logger): ServiceContainer {
+export function createContainer(db: Postgres, logger: Logger): ServiceContainer {
   const restaurantRepo = new RestaurantRepository(db)
   const userRepo = new UserRepository(db)
   const hasher = new BCryptHasher()
