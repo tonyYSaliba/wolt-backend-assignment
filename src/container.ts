@@ -23,7 +23,10 @@ export interface ServiceContainer {
   }
 }
 
-export function createContainer(db: Postgres, logger: Logger): ServiceContainer {
+export function createContainer(
+  db: Postgres,
+  logger: Logger
+): ServiceContainer {
   const restaurantRepo = new RestaurantRepository(db)
   const userRepo = new UserRepository(db)
   const hasher = new BCryptHasher()
