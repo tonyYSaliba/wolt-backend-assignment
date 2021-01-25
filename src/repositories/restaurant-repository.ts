@@ -32,11 +32,11 @@ export class RestaurantRepository {
     const conn = await this.db.getConnection()
     const result = await conn.table(this.TABLE).insert({
       blurhash: restaurant.blurhash,
-      longitude: restaurant.longitude,
-      latitude: restaurant.latitude,
+      longitude: restaurant.location[0],
+      latitude: restaurant.location[1],
       name: restaurant.name,
       online: restaurant.online,
-      launchDate: restaurant.launchDate,
+      launch_date: restaurant.launch_date,
       popularity: restaurant.popularity,
       created: restaurant.created,
       updated: restaurant.updated
@@ -56,11 +56,11 @@ export class RestaurantRepository {
       .table(this.TABLE)
       .update({
         blurhash: restaurant.blurhash,
-        longitude: restaurant.longitude,
-        latitude: restaurant.latitude,
+        longitude: restaurant.location[0],
+        latitude: restaurant.location[1],
         name: restaurant.name,
         online: restaurant.online,
-        launchDate: restaurant.launchDate,
+        launch_date: restaurant.launch_date,
         popularity: restaurant.popularity
       })
       .where({ id: restaurant.id })
@@ -85,11 +85,10 @@ export class RestaurantRepository {
     return {
       id: row.id,
       blurhash: row.blurhash,
-      longitude: row.longitude,
-      latitude: row.latitude,
+      location: [row.longitude, row.latitude],
       name: row.name,
       online: row.online === 1,
-      launchDate: row.launchDate,
+      launch_date: row.launch_date,
       popularity: row.popularity,
       created: row.created,
       updated: row.updated

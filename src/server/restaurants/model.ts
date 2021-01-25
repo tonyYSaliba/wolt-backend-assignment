@@ -8,8 +8,7 @@ export interface CreateRestaurant {
 export class RestaurantModel {
   public id?: number
   public blurhash: string
-  public longitude: number
-  public latitude: number
+  public location: [number, number]
   public name: string
   public online: boolean
   public launchDate: Date
@@ -20,11 +19,10 @@ export class RestaurantModel {
   constructor(restaurant: Restaurant) {
     this.id = restaurant.id
     this.blurhash = restaurant.blurhash
-    this.longitude = restaurant.longitude
-    this.latitude = restaurant.latitude
+    this.location = restaurant.location
     this.name = restaurant.name
     this.online = restaurant.online
-    this.launchDate = restaurant.launchDate
+    this.launchDate = restaurant.launch_date
     this.popularity = restaurant.popularity
     this.created = restaurant.created
     this.updated = restaurant.updated

@@ -48,11 +48,10 @@ export class RestaurantController {
     const restaurant = await this.manager.find(ctx.params.id)
 
     restaurant.blurhash = restaurantDto.blurhash
-    restaurant.longitude = restaurantDto.longitude
-    restaurant.latitude = restaurantDto.latitude
+    restaurant.location = restaurantDto.location
     restaurant.name = restaurantDto.name
     restaurant.online = restaurantDto.online
-    restaurant.launchDate = restaurantDto.launchDate
+    restaurant.launch_date = restaurantDto.launchDate
     restaurant.popularity = restaurantDto.popularity
     restaurant.created = restaurantDto.created
     restaurant.updated = restaurantDto.updated

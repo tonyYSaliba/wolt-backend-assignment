@@ -1,11 +1,10 @@
 export interface Restaurant {
   id?: number
   blurhash: string
-  longitude: number
-  latitude: number
+  location: [number, number]
   name: string
   online: boolean
-  launchDate: Date
+  launch_date: Date
   popularity: number
   created: Date
   updated: Date
