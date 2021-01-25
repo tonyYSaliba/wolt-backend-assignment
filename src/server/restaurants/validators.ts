@@ -5,7 +5,7 @@ export const updateRestaurant: Joi.SchemaMap = {
   location: Joi.array().items(Joi.number().required(), Joi.number().required()),
   name: Joi.string().required(),
   online: Joi.boolean().required(),
-  launchDate: Joi.date().required(),
+  launch_date: Joi.date().required(),
   popularity: Joi.number().required()
 }
 
@@ -14,6 +14,6 @@ export const createRestaurant: Joi.SchemaMap = {
   location: Joi.array().items(Joi.number().required(), Joi.number().required()),
   name: Joi.string().required(),
   online: Joi.boolean().required(),
-  launchDate: Joi.date().required(),
+  launch_date: Joi.date().required(),
   popularity: Joi.number().required()
 }
