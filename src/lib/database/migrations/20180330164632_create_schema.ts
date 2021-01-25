@@ -20,7 +20,7 @@ export function up(db: knex) {
         table.float('latitude').notNullable()
         table.string('name', 64).notNullable()
         table.boolean('online').notNullable()
-        table.dateTime('launchDate').notNullable()
+        table.dateTime('launch_date').notNullable()
         table.float('popularity').notNullable()
         table.dateTime('created').notNullable()
         table.dateTime('updated').notNullable()
