@@ -42,6 +42,24 @@ export class RestaurantController {
     ctx.set('location', `/api/v1/restaurants/${newRestaurant.id}`)
   }
 
+  public async upload(ctx: Context) {
+    const authUser: AuthUser = ctx.state.user
+    const restaurants: Restaurant[] = ctx.request.body.restaurants
+
+    console.log(authUser.id)
+    ctx.body = new Array()
+    for await (const restaurant of restaurants) {
+      try {
+        await this.manager.create(restaurant)
+        ctx.body.push(restaurant)
+      } catch (error) {
+        ctx.body.push(error)
+      }
+    }
+    ctx.status = 201
+    ctx.set('location', `/api/v1/restaurants/`)
+  }
+
   public async update(ctx: Context) {
     const restaurantDto = ctx.request.body
     // const authUser: AuthUser = ctx.state.user

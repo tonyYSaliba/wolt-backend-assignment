@@ -35,6 +35,15 @@ export function init(server: Koa, container: ServiceContainer) {
     controller.create.bind(controller)
   )
 
+  router.post(
+    '/upload',
+    bodyParser(),
+    middleware.authentication(container.lib.authenticator),
+    middleware.authorization([Role.user, Role.admin]),
+    middleware.validate({ request: { body: validators.createRestaurants } }),
+    controller.upload.bind(controller)
+  )
+
   router.put(
     '/:id',
     bodyParser(),
