@@ -18,7 +18,7 @@ export function up(db: knex) {
         table.string('blurhash').notNullable()
         table.float('longitude').notNullable()
         table.float('latitude').notNullable()
-        table.string('name', 64).notNullable()
+        table.string('name', 64).unique()
         table.boolean('online').notNullable()
         table.dateTime('launch_date').notNullable()
         table.float('popularity').notNullable()

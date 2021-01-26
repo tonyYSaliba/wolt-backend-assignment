@@ -1,5 +1,5 @@
 import { Restaurant } from '../entities'
-import { NotFoundError } from '../errors'
+import { NotFoundError, ValidationError } from '../errors'
 import { Postgres } from '../lib/database'
 
 export class RestaurantRepository {
@@ -30,21 +30,33 @@ export class RestaurantRepository {
     restaurant.updated = new Date()
 
     const conn = await this.db.getConnection()
-    const result = await conn.table(this.TABLE).insert({
-      blurhash: restaurant.blurhash,
-      longitude: restaurant.location[0],
-      latitude: restaurant.location[1],
-      name: restaurant.name,
-      online: restaurant.online,
-      launch_date: restaurant.launch_date,
-      popularity: restaurant.popularity,
-      created: restaurant.created,
-      updated: restaurant.updated
-    })
 
-    restaurant.id = result[0]
+    try {
+      const result = await conn.table(this.TABLE).insert({
+        blurhash: restaurant.blurhash,
+        longitude: restaurant.location[0],
+        latitude: restaurant.location[1],
+        name: restaurant.name,
+        online: restaurant.online,
+        launch_date: restaurant.launch_date,
+        popularity: restaurant.popularity,
+        created: restaurant.created,
+        updated: restaurant.updated
+      })
 
-    return restaurant
+      restaurant.id = result[0]
+
+      return restaurant
+    } catch (err) {
+      if (err.code === 'ER_DUP_ENTRY') {
+        throw new ValidationError(
+          `Restaurant ${restaurant.name} already exists`,
+          err
+        )
+      }
+
+      throw err
+    }
   }
 
   public async update(restaurant: Restaurant): Promise<Restaurant> {
