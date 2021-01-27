@@ -13,8 +13,8 @@ export class RestaurantModel {
   public online: boolean
   public launchDate: Date
   public popularity: number
-  public created: Date
-  public updated: Date
+  // public created: Date
+  // public updated: Date
 
   constructor(restaurant: Restaurant) {
     this.id = restaurant.id
@@ -24,7 +24,7 @@ export class RestaurantModel {
     this.online = restaurant.online
     this.launchDate = restaurant.launch_date
     this.popularity = restaurant.popularity
-    this.created = restaurant.created
-    this.updated = restaurant.updated
+    // this.created = restaurant.created
+    // this.updated = restaurant.updated
   }
 }

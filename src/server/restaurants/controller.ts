@@ -53,6 +53,7 @@ export class RestaurantController {
         await this.manager.create(restaurant)
         ctx.body.push(restaurant)
       } catch (error) {
+        // change to update
         ctx.body.push(error)
       }
     }
