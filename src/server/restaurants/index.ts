@@ -54,9 +54,7 @@ export function init(server: Koa, container: ServiceContainer) {
     middleware.authorization([Role.user, Role.admin]),
     middleware.validate({
       params: { id: Joi.number().required() },
-      request: {
-        body: validators.updateRestaurant
-      }
+      request: { body: validators.updateRestaurant }
     }),
     controller.update.bind(controller)
   )

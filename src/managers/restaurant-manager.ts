@@ -42,6 +42,20 @@ export class RestaurantManager {
     )
   }
 
+  public async findByLowerRadiusOrderByDistanceAndOnline(
+    longitude: number,
+    latitude: number,
+    radius: number,
+    limit: number
+  ): Promise<Restaurant[]> {
+    return this.repo.findByLowerRadiusOrderByDistanceAndOnline(
+      longitude,
+      latitude,
+      radius,
+      limit
+    )
+  }
+
   public create(restaurant: Restaurant): Promise<Restaurant> {
     return this.repo.insert(restaurant)
   }

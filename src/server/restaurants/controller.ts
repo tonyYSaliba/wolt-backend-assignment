@@ -58,17 +58,17 @@ export class RestaurantController {
     )
     restaurantDiscovery.sections.push(newRestaurants)
 
-    // const restaurants3 = await this.manager.findByLowerRadiusOrderByPopularityAndOnline(
-    //   longitude,
-    //   latitude,
-    //   radius,
-    //   limit
-    // )
-    // const nearbyRestaurants = new RestaurantSectionModel('Nearby Restaurants')
-    // nearbyRestaurants.restaurants = restaurants3.map(
-    //   (r: Restaurant) => new RestaurantModel(r)
-    // )
-    // restaurantDiscovery.sections.push(nearbyRestaurants)
+    const restaurants3 = await this.manager.findByLowerRadiusOrderByDistanceAndOnline(
+      longitude,
+      latitude,
+      radius,
+      limit
+    )
+    const nearbyRestaurants = new RestaurantSectionModel('Nearby Restaurants')
+    nearbyRestaurants.restaurants = restaurants3.map(
+      (r: Restaurant) => new RestaurantModel(r)
+    )
+    restaurantDiscovery.sections.push(nearbyRestaurants)
 
     ctx.body = restaurantDiscovery
     ctx.status = 200

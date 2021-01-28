@@ -105,6 +105,48 @@ export class RestaurantRepository {
     return rows.map((r: any) => this.transform(r))
   }
 
+  public async findByLowerRadiusOrderByDistanceAndOnline(
+    longitude: number,
+    latitude: number,
+    radius: number,
+    limit: number
+  ): Promise<Restaurant[]> {
+    const conn = await this.db.getConnection()
+    const rows = await conn
+      .select(
+        '*',
+        knexPostgis(conn)
+          .x('location')
+          .as('longitude'),
+        knexPostgis(conn)
+          .y('location')
+          .as('latitude'),
+        knexPostgis(conn)
+          .distance(
+            'location',
+            knexPostgis(conn).geography(
+              knexPostgis(conn).makePoint(longitude, latitude)
+            )
+          )
+          .as('distance')
+      )
+      .from(this.TABLE)
+      .where(
+        knexPostgis(conn).dwithin(
+          'location',
+          knexPostgis(conn).geography(
+            knexPostgis(conn).makePoint(longitude, latitude)
+          ),
+          radius
+        )
+      )
+      .orderBy('online', 'desc')
+      .orderBy('distance', 'asc')
+      .limit(limit)
+
+    return rows.map((r: any) => this.transform(r))
+  }
+
   public async insert(restaurant: Restaurant): Promise<Restaurant> {
     restaurant.created = new Date()
     restaurant.updated = new Date()
