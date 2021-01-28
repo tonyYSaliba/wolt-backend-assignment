@@ -1,6 +1,8 @@
 import { Restaurant } from '../entities'
 import { NotFoundError, ValidationError } from '../errors'
 import { Postgres } from '../lib/database'
+// tslint:disable-next-line: no-var-requires
+const knexPostgis = require('knex-postgis')
 
 export class RestaurantRepository {
   private readonly TABLE: string = 'restaurant'
@@ -13,7 +15,15 @@ export class RestaurantRepository {
   public async find(id: number): Promise<Restaurant> {
     const conn = await this.db.getConnection()
     const row = await conn
-      .select()
+      .select(
+        '*',
+        knexPostgis(conn)
+          .x('location')
+          .as('longitude'),
+        knexPostgis(conn)
+          .y('location')
+          .as('latitude')
+      )
       .from(this.TABLE)
       .where({ id })
       .first()
@@ -25,6 +35,40 @@ export class RestaurantRepository {
     return this.transform(row)
   }
 
+  public async findByRadiusOrderByPopularityAndOnline(
+    longitude: number,
+    latitude: number,
+    radius: number,
+    limit: number
+  ): Promise<Restaurant[]> {
+    const conn = await this.db.getConnection()
+    const rows = await conn
+      .select(
+        '*',
+        knexPostgis(conn)
+          .x('location')
+          .as('longitude'),
+        knexPostgis(conn)
+          .y('location')
+          .as('latitude')
+      )
+      .from(this.TABLE)
+      .where(
+        knexPostgis(conn).dwithin(
+          'location',
+          knexPostgis(conn).geography(
+            knexPostgis(conn).makePoint(longitude, latitude)
+          ),
+          radius
+        )
+      )
+      .orderBy('popularity', 'desc')
+      .orderBy('online', 'desc')
+      .limit(limit)
+
+    return rows.map((r: any) => this.transform(r))
+  }
+
   public async insert(restaurant: Restaurant): Promise<Restaurant> {
     restaurant.created = new Date()
     restaurant.updated = new Date()
@@ -34,8 +78,13 @@ export class RestaurantRepository {
     try {
       const result = await conn.table(this.TABLE).insert({
         blurhash: restaurant.blurhash,
-        longitude: restaurant.location[0],
-        latitude: restaurant.location[1],
+        location: knexPostgis(conn).setSRID(
+          knexPostgis(conn).makePoint(
+            restaurant.location[0],
+            restaurant.location[1]
+          ),
+          4326
+        ),
         name: restaurant.name,
         online: restaurant.online,
         launch_date: restaurant.launch_date,
@@ -68,8 +117,13 @@ export class RestaurantRepository {
       .table(this.TABLE)
       .update({
         blurhash: restaurant.blurhash,
-        longitude: restaurant.location[0],
-        latitude: restaurant.location[1],
+        location: knexPostgis(conn).setSRID(
+          knexPostgis(conn).makePoint(
+            restaurant.location[0],
+            restaurant.location[1]
+          ),
+          4326
+        ),
         name: restaurant.name,
         online: restaurant.online,
         launch_date: restaurant.launch_date,

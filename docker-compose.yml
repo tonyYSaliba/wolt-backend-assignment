@@ -19,7 +19,7 @@ services:
     network_mode: bridge
 
   postgres:
-    image: postgres
+    image: kartoza/postgis
     restart: always
     environment:
         - POSTGRES_DB=discovery

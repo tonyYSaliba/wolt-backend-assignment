@@ -16,8 +16,7 @@ export function up(db: knex) {
       return db.schema.createTable('restaurant', table => {
         table.increments('id').primary()
         table.string('blurhash').notNullable()
-        table.float('longitude').notNullable()
-        table.float('latitude').notNullable()
+        table.specificType('location', 'geometry(point, 4326)')
         table.string('name', 64).unique()
         table.boolean('online').notNullable()
         table.dateTime('launch_date').notNullable()
