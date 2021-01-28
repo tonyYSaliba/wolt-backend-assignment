@@ -28,3 +28,19 @@ export class RestaurantModel {
     // this.updated = restaurant.updated
   }
 }
+
+export class RestaurantSectionModel {
+  public title: string
+  public restaurants: RestaurantModel[]
+
+  constructor(title: string) {
+    this.title = title
+  }
+}
+export class RestaurantDiscoveryModel {
+  public sections: RestaurantSectionModel[]
+
+  constructor() {
+    this.sections = []
+  }
+}

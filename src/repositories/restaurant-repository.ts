@@ -35,7 +35,7 @@ export class RestaurantRepository {
     return this.transform(row)
   }
 
-  public async findByRadiusOrderByPopularityAndOnline(
+  public async findByLowerRadiusOrderByPopularityAndOnline(
     longitude: number,
     latitude: number,
     radius: number,
@@ -62,8 +62,44 @@ export class RestaurantRepository {
           radius
         )
       )
-      .orderBy('popularity', 'desc')
       .orderBy('online', 'desc')
+      .orderBy('popularity', 'desc')
+      .limit(limit)
+
+    return rows.map((r: any) => this.transform(r))
+  }
+
+  public async findByLowerRadiusAndGreaterDateOrderByDateAndOnline(
+    longitude: number,
+    latitude: number,
+    radius: number,
+    date: Date,
+    limit: number
+  ): Promise<Restaurant[]> {
+    const conn = await this.db.getConnection()
+    const rows = await conn
+      .select(
+        '*',
+        knexPostgis(conn)
+          .x('location')
+          .as('longitude'),
+        knexPostgis(conn)
+          .y('location')
+          .as('latitude')
+      )
+      .from(this.TABLE)
+      .where('launch_date', '>=', date)
+      .andWhere(
+        knexPostgis(conn).dwithin(
+          'location',
+          knexPostgis(conn).geography(
+            knexPostgis(conn).makePoint(longitude, latitude)
+          ),
+          radius
+        )
+      )
+      .orderBy('online', 'desc')
+      .orderBy('launch_date', 'desc')
       .limit(limit)
 
     return rows.map((r: any) => this.transform(r))
@@ -153,7 +189,7 @@ export class RestaurantRepository {
       blurhash: row.blurhash,
       location: [row.longitude, row.latitude],
       name: row.name,
-      online: row.online === 1,
+      online: row.online,
       launch_date: row.launch_date,
       popularity: row.popularity,
       created: row.created,

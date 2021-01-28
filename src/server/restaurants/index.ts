@@ -13,17 +13,20 @@ export function init(server: Koa, container: ServiceContainer) {
   const controller = new RestaurantController(container.managers.restaurant)
 
   router.get(
+    '/discovery',
+    middleware.authentication(container.lib.authenticator),
+    middleware.authorization([Role.user, Role.admin]),
+    middleware.validate({
+      query: { lat: Joi.number().required(), lon: Joi.number().required() }
+    }),
+    controller.discovery.bind(controller)
+  )
+
+  router.get(
     '/:id',
     middleware.authentication(container.lib.authenticator),
     middleware.authorization([Role.user, Role.admin]),
     controller.get.bind(controller)
-  )
-
-  router.get(
-    '/',
-    middleware.authentication(container.lib.authenticator),
-    middleware.authorization([Role.user, Role.admin]),
-    controller.getAll.bind(controller)
   )
 
   router.post(

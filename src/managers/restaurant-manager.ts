@@ -12,16 +12,32 @@ export class RestaurantManager {
     return this.repo.find(id)
   }
 
-  public async findByRadiusOrderByPopularityAndOnline(
+  public async findByLowerRadiusOrderByPopularityAndOnline(
     longitude: number,
     latitude: number,
     radius: number,
     limit: number
   ): Promise<Restaurant[]> {
-    return this.repo.findByRadiusOrderByPopularityAndOnline(
+    return this.repo.findByLowerRadiusOrderByPopularityAndOnline(
       longitude,
       latitude,
       radius,
+      limit
+    )
+  }
+
+  public async findByLowerRadiusAndGreaterDateOrderByDateAndOnline(
+    longitude: number,
+    latitude: number,
+    radius: number,
+    date: Date,
+    limit: number
+  ): Promise<Restaurant[]> {
+    return this.repo.findByLowerRadiusAndGreaterDateOrderByDateAndOnline(
+      longitude,
+      latitude,
+      radius,
+      date,
       limit
     )
   }

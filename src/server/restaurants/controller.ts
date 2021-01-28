@@ -2,7 +2,11 @@ import { Context } from 'koa'
 import { Restaurant } from '../../entities'
 import { AuthUser } from '../../lib/authentication'
 import { RestaurantManager } from '../../managers'
-import { RestaurantModel } from './model'
+import {
+  RestaurantDiscoveryModel,
+  RestaurantModel,
+  RestaurantSectionModel
+} from './model'
 
 export class RestaurantController {
   private manager: RestaurantManager
@@ -19,13 +23,54 @@ export class RestaurantController {
     ctx.status = 200
   }
 
-  public async getAll(ctx: Context) {
-    // const authUser: AuthUser = ctx.state.user
-    // const limit = isNaN(ctx.query.limit) ? 10 : parseInt(ctx.query.limit, 10)
-    // const offset = isNaN(ctx.query.offset) ? 0 : parseInt(ctx.query.offset, 10)
-    // const restaurants = await this.manager.findUserRestaurants(authUser.id, limit, offset)
+  public async discovery(ctx: Context) {
+    const longitude = isNaN(ctx.query.lon) ? 0 : parseFloat(ctx.query.lon)
+    const latitude = isNaN(ctx.query.lat) ? 0 : parseFloat(ctx.query.lat)
+    const radius = 1500
+    const limit = 10
 
-    // ctx.body = restaurants.map((t: Restaurant) => new RestaurantModel(t))
+    const restaurantDiscovery = new RestaurantDiscoveryModel()
+
+    const restaurants = await this.manager.findByLowerRadiusOrderByPopularityAndOnline(
+      longitude,
+      latitude,
+      radius,
+      limit
+    )
+    const popularRestaurants = new RestaurantSectionModel('Popular Restaurants')
+    popularRestaurants.restaurants = restaurants.map(
+      (r: Restaurant) => new RestaurantModel(r)
+    )
+    restaurantDiscovery.sections.push(popularRestaurants)
+
+    const date = new Date()
+    date.setMonth(date.getMonth() - 4)
+    const restaurants2 = await this.manager.findByLowerRadiusAndGreaterDateOrderByDateAndOnline(
+      longitude,
+      latitude,
+      radius,
+      date,
+      limit
+    )
+    const newRestaurants = new RestaurantSectionModel('New Restaurants')
+    newRestaurants.restaurants = restaurants2.map(
+      (r: Restaurant) => new RestaurantModel(r)
+    )
+    restaurantDiscovery.sections.push(newRestaurants)
+
+    // const restaurants3 = await this.manager.findByLowerRadiusOrderByPopularityAndOnline(
+    //   longitude,
+    //   latitude,
+    //   radius,
+    //   limit
+    // )
+    // const nearbyRestaurants = new RestaurantSectionModel('Nearby Restaurants')
+    // nearbyRestaurants.restaurants = restaurants3.map(
+    //   (r: Restaurant) => new RestaurantModel(r)
+    // )
+    // restaurantDiscovery.sections.push(nearbyRestaurants)
+
+    ctx.body = restaurantDiscovery
     ctx.status = 200
   }
 
