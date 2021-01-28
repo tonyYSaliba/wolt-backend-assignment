@@ -5,6 +5,9 @@ import { HealthMonitor } from './lib/health'
 import { AppServer, createServer } from './server'
 
 export async function init() {
+  const dotenv = require('dotenv')
+  dotenv.config()
+
   const logger = pino()
 
   try {
