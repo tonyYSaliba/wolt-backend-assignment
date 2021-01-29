@@ -38,6 +38,7 @@ describe('POST /api/v1/restaurants', () => {
 
     expect(res.header.location).equals(`/api/v1/restaurants/${res.body.id}`)
     expect(res.body).includes({
+      id: res.body.id,
       blurhash: 'UAPp-JsCNbr[UQagn*V^p-bYjIjtL?kSo]bG',
       name: 'Charming Cherry House',
       online: true,
@@ -46,6 +47,7 @@ describe('POST /api/v1/restaurants', () => {
     })
     expect(res.body.location[0]).equals(24.933257)
     expect(res.body.location[1]).equals(60.171263)
+    expect(res.body.location.length).equals(2)
   })
 
   it('Should return 400 when missing body data', async () => {

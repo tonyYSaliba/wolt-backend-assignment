@@ -26,11 +26,11 @@ describe('GET /api/v1/restaurants/:id', () => {
   })
 
   it('Should return a single restaurant', async () => {
-    let location: [number, number]
-    location = [24.933257, 60.171263]
+    let location1: [number, number]
+    location1 = [24.933257, 60.171263]
     const restaurant = {
       blurhash: 'UAPp-JsCNbr[UQagn*V^p-bYjIjtL?kSo]bG',
-      location,
+      location: location1,
       name: 'Charming Cherry House',
       online: true,
       launch_date: new Date('2020-09-20'),
@@ -46,12 +46,14 @@ describe('GET /api/v1/restaurants/:id', () => {
 
     expect(res.body).includes({
       blurhash: 'UAPp-JsCNbr[UQagn*V^p-bYjIjtL?kSo]bG',
-      location,
       name: 'Charming Cherry House',
       online: true,
-      launch_date: new Date('2020-09-20'),
+      launch_date: '2020-09-20',
       popularity: 0.665082352909038
     })
+    expect(res.body.location[0]).equals(24.933257)
+    expect(res.body.location[1]).equals(60.171263)
+    expect(res.body.location.length).equals(2)
   })
 
   it('Should return 404 when restaurant does not exist', async () => {

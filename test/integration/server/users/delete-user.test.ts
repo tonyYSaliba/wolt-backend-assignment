@@ -40,7 +40,7 @@ describe('DELETE /api/v1/users/:id', () => {
 
     const restaurants = await conn.from('restaurant').count()
 
-    expect(restaurants[0]['count(*)']).eql(0)
+    expect(parseInt(restaurants[0].count, 10)).eql(0)
   })
 
   it('Should return not allowed error', async () => {

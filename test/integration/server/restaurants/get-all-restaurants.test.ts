@@ -26,21 +26,22 @@ describe('GET /api/v1/restaurants', () => {
   })
 
   it('Should return a list of restaurants', async () => {
-    let location: [number, number]
-    location = [24.933257, 60.171263]
+    let location1: [number, number]
+    location1 = [24.933257, 60.171263]
     const restaurant1 = {
       blurhash: 'UAPp-JsCNbr[UQagn*V^p-bYjIjtL?kSo]bG',
-      location,
+      location: location1,
       name: 'Charming Cherry House',
       online: true,
       launch_date: new Date('2020-09-20'),
       popularity: 0.665082352909038
     }
 
-    location = [24.927635, 60.160208]
+    let location2: [number, number]
+    location2 = [24.927635, 60.160208]
     const restaurant2 = {
       blurhash: 'UJAw_5[.OEW;2vJ-#,a}ODJ-OEwc,VwcSgSg',
-      location,
+      location: location2,
       name: 'Potato Garden',
       online: false,
       launch_date: new Date('2020-01-25'),

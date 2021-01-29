@@ -30,12 +30,12 @@ describe('PUT /api/v1/restaurants/:id', () => {
   })
 
   it('Should update a restaurant', async () => {
-    let location: [number, number]
-    location = [24.933257, 60.171263]
+    let location1: [number, number]
+    location1 = [24.933257, 60.171263]
     const restaurant = await createRestaurantTest(
       {
         blurhash: 'UAPp-JsCNbr[UQagn*V^p-bYjIjtL?kSo]bG',
-        location,
+        location: location1,
         name: 'Charming Cherry House',
         online: true,
         launch_date: new Date('2020-09-20'),
@@ -49,32 +49,33 @@ describe('PUT /api/v1/restaurants/:id', () => {
       .set('Authorization', token)
       .send({
         blurhash: 'UJAw_5[.OEW;2vJ-#,a}ODJ-OEwc,VwcSgSg',
-        location,
+        location: [24.927635, 60.160208],
         name: 'Charming Cherry House',
         online: false,
-        launch_date: new Date('2020-01-25'),
+        launch_date: '2020-01-25',
         popularity: 0.9385898095797295
       })
       .expect(200)
 
-    location = [24.927635, 60.160208]
     expect(res.body).include({
       blurhash: 'UJAw_5[.OEW;2vJ-#,a}ODJ-OEwc,VwcSgSg',
-      location,
       name: 'Charming Cherry House',
       online: false,
-      launch_date: new Date('2020-01-25'),
+      launch_date: '2020-01-25',
       popularity: 0.9385898095797295
     })
+    expect(res.body.location[0]).equals(24.927635)
+    expect(res.body.location[1]).equals(60.160208)
+    expect(res.body.location.length).equals(2)
   })
 
   it('Should return 400 when missing body data', async () => {
-    let location: [number, number]
-    location = [24.933257, 60.171263]
+    let location2: [number, number]
+    location2 = [24.933257, 60.171263]
     const restaurant = await createRestaurantTest(
       {
         blurhash: 'UAPp-JsCNbr[UQagn*V^p-bYjIjtL?kSo]bG',
-        location,
+        location: location2,
         name: 'Potato Garden',
         online: true,
         launch_date: new Date('2022-09-20'),
@@ -88,16 +89,16 @@ describe('PUT /api/v1/restaurants/:id', () => {
       .set('Authorization', token)
       .send({
         blurhash: 'UAPp-JsCNbr[UQagn*V^p-bYjIjtL?kSo]bG',
-        location,
-        name: 'Potato Garden',
+        location: [24.933257, 60.171263],
         online: true,
-        launch_date: new Date('2022-09-20')
+        launch_date: '2022-09-20',
+        popularity: 0.665082352909032
       })
       .expect(400)
 
     expect(res.body.code).equals(30001)
     expect(res.body.fields.length).equals(1)
-    expect(res.body.fields[0].message).eql('"done" is required')
+    expect(res.body.fields[0].message).eql('"name" is required')
   })
 
   it('Should return unauthorized when token is not valid', async () => {
