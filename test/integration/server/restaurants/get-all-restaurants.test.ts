@@ -26,14 +26,25 @@ describe('GET /api/v1/restaurants', () => {
   })
 
   it('Should return a list of restaurants', async () => {
+    let location: [number, number]
+    location = [24.933257, 60.171263]
     const restaurant1 = {
-      name: 'Clean Room',
-      description: 'Mom said that I need to clean my room.'
+      blurhash: 'UAPp-JsCNbr[UQagn*V^p-bYjIjtL?kSo]bG',
+      location,
+      name: 'Charming Cherry House',
+      online: true,
+      launch_date: new Date('2020-09-20'),
+      popularity: 0.665082352909038
     }
 
+    location = [24.927635, 60.160208]
     const restaurant2 = {
-      name: 'Do Homework',
-      description: 'Math homework.'
+      blurhash: 'UJAw_5[.OEW;2vJ-#,a}ODJ-OEwc,VwcSgSg',
+      location,
+      name: 'Potato Garden',
+      online: false,
+      launch_date: new Date('2020-01-25'),
+      popularity: 0.9385898095797295
     }
 
     await createRestaurantTest(restaurant1, token)
@@ -45,8 +56,8 @@ describe('GET /api/v1/restaurants', () => {
       .expect(200)
 
     expect(res.body.length).equals(2)
-    expect(res.body[0].name).equals('Clean Room')
-    expect(res.body[1].name).equals('Do Homework')
+    expect(res.body[0].name).equals('Charming Cherry House')
+    expect(res.body[1].name).equals('Potato Garden')
   })
 
   it('Should return unauthorized when token is not valid', async () => {

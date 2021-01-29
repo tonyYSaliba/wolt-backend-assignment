@@ -30,34 +30,69 @@ describe('PUT /api/v1/restaurants/:id', () => {
   })
 
   it('Should update a restaurant', async () => {
+    let location: [number, number]
+    location = [24.933257, 60.171263]
     const restaurant = await createRestaurantTest(
-      { name: 'Do homework', description: 'Exercise 1 and 2' },
+      {
+        blurhash: 'UAPp-JsCNbr[UQagn*V^p-bYjIjtL?kSo]bG',
+        location,
+        name: 'Charming Cherry House',
+        online: true,
+        launch_date: new Date('2020-09-20'),
+        popularity: 0.665082352909038
+      },
       token
     )
 
     const res = await supertest(testServer)
       .put(`/api/v1/restaurants/${restaurant.id}`)
       .set('Authorization', token)
-      .send({ name: 'Do TPC', description: 'Some job', done: true })
+      .send({
+        blurhash: 'UJAw_5[.OEW;2vJ-#,a}ODJ-OEwc,VwcSgSg',
+        location,
+        name: 'Charming Cherry House',
+        online: false,
+        launch_date: new Date('2020-01-25'),
+        popularity: 0.9385898095797295
+      })
       .expect(200)
 
+    location = [24.927635, 60.160208]
     expect(res.body).include({
-      name: 'Do TPC',
-      description: 'Some job',
-      done: true
+      blurhash: 'UJAw_5[.OEW;2vJ-#,a}ODJ-OEwc,VwcSgSg',
+      location,
+      name: 'Charming Cherry House',
+      online: false,
+      launch_date: new Date('2020-01-25'),
+      popularity: 0.9385898095797295
     })
   })
 
   it('Should return 400 when missing body data', async () => {
+    let location: [number, number]
+    location = [24.933257, 60.171263]
     const restaurant = await createRestaurantTest(
-      { name: 'Do homework', description: 'Exercise 1 and 2' },
+      {
+        blurhash: 'UAPp-JsCNbr[UQagn*V^p-bYjIjtL?kSo]bG',
+        location,
+        name: 'Potato Garden',
+        online: true,
+        launch_date: new Date('2022-09-20'),
+        popularity: 0.665082352909032
+      },
       token
     )
 
     const res = await supertest(testServer)
       .put(`/api/v1/restaurants/${restaurant.id}`)
       .set('Authorization', token)
-      .send({ name: 'Do TPC', description: 'Some job' })
+      .send({
+        blurhash: 'UAPp-JsCNbr[UQagn*V^p-bYjIjtL?kSo]bG',
+        location,
+        name: 'Potato Garden',
+        online: true,
+        launch_date: new Date('2022-09-20')
+      })
       .expect(400)
 
     expect(res.body.code).equals(30001)

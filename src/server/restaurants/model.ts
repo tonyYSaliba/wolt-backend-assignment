@@ -1,8 +1,13 @@
 import { Restaurant } from '../../entities'
 
 export interface CreateRestaurant {
+  id?: number
+  blurhash: string
+  location: [number, number]
   name: string
-  description: string
+  online: boolean
+  launch_date: Date
+  popularity: number
 }
 
 export class RestaurantModel {
@@ -11,7 +16,8 @@ export class RestaurantModel {
   public location: [number, number]
   public name: string
   public online: boolean
-  public launchDate: Date
+  // tslint:disable-next-line: variable-name
+  public launch_date: Date
   public popularity: number
   // public created: Date
   // public updated: Date
@@ -22,7 +28,7 @@ export class RestaurantModel {
     this.location = restaurant.location
     this.name = restaurant.name
     this.online = restaurant.online
-    this.launchDate = restaurant.launch_date
+    this.launch_date = restaurant.launch_date
     this.popularity = restaurant.popularity
     // this.created = restaurant.created
     // this.updated = restaurant.updated

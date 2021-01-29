@@ -17,7 +17,7 @@ export async function init() {
     const db = new Postgres({
       database: 'discovery',
       host: process.env.DB_HOST,
-      port: Number(process.env.DB_PORT) || 5432,
+      port: Number(process.env.DB_PORT),
       user: process.env.DB_USER,
       password: process.env.DB_PASSWORD,
       debug: process.env.ENV !== 'production'

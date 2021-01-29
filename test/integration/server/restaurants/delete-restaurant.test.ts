@@ -26,9 +26,15 @@ describe('DELETE /api/v1/restaurants/:id', () => {
   })
 
   it('Should delete a restaurant and return 204', async () => {
+    let location1: [number, number]
+    location1 = [24.933257, 60.171263]
     const restaurant = {
-      name: 'Do Something',
-      description: 'Some random description'
+      blurhash: 'UAPp-JsCNbr[UQagn*V^p-bYjIjtL?kSo]bG',
+      location: location1,
+      name: 'Charming Cherry House',
+      online: true,
+      launch_date: new Date('2020-09-20'),
+      popularity: 0.665082352909038
     }
 
     const createdRestaurant = await createRestaurantTest(restaurant, token)

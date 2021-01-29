@@ -22,8 +22,12 @@ describe('POST /api/v1/restaurants', () => {
 
   it('Should create a restaurant and return 201', async () => {
     const restaurant = {
-      name: 'Do homework',
-      description: 'Exercise 1 and 2'
+      blurhash: 'UAPp-JsCNbr[UQagn*V^p-bYjIjtL?kSo]bG',
+      location: [24.933257, 60.171263],
+      name: 'Charming Cherry House',
+      online: true,
+      launch_date: '2020-09-20',
+      popularity: 0.665082352909038
     }
 
     const res = await supertest(testServer)
@@ -33,16 +37,24 @@ describe('POST /api/v1/restaurants', () => {
       .expect(201)
 
     expect(res.header.location).equals(`/api/v1/restaurants/${res.body.id}`)
-    expect(res.body).include({
-      name: 'Do homework',
-      description: 'Exercise 1 and 2',
-      done: false
+    expect(res.body).includes({
+      blurhash: 'UAPp-JsCNbr[UQagn*V^p-bYjIjtL?kSo]bG',
+      name: 'Charming Cherry House',
+      online: true,
+      launch_date: '2020-09-20',
+      popularity: 0.665082352909038
     })
+    expect(res.body.location[0]).equals(24.933257)
+    expect(res.body.location[1]).equals(60.171263)
   })
 
   it('Should return 400 when missing body data', async () => {
     const restaurant = {
-      name: 'Do something'
+      blurhash: 'UAPp-JsCNbr[UQagn*V^p-bYjIjtL?kSo]bG',
+      location: [24.933257, 60.171263],
+      online: true,
+      launch_date: '2020-09-20',
+      popularity: 0.665082352909038
     }
 
     const res = await supertest(testServer)
@@ -53,7 +65,7 @@ describe('POST /api/v1/restaurants', () => {
 
     expect(res.body.code).equals(30001)
     expect(res.body.fields.length).equals(1)
-    expect(res.body.fields[0].message).eql('"description" is required')
+    expect(res.body.fields[0].message).eql('"name" is required')
   })
 
   it('Should return unauthorized when token is not valid', async () => {

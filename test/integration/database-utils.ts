@@ -16,7 +16,7 @@ export async function truncateTables(tables: string[]) {
   const conn = await database.getConnection()
 
   for (const table of tables) {
-    await conn.raw(`DELETE FROM ${table}`)
+    await conn.raw(`DELETE FROM "${table}"`)
   }
 }
 

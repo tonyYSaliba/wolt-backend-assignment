@@ -1,12 +1,7 @@
 import { expect } from 'chai'
 import * as supertest from 'supertest'
 import { database, setAdminMode, truncateTables } from '../../database-utils'
-import {
-  createRestaurantTest,
-  createUserTest,
-  getLoginToken,
-  testServer
-} from '../../server-utils'
+import { createUserTest, getLoginToken, testServer } from '../../server-utils'
 
 describe('DELETE /api/v1/users/:id', () => {
   beforeEach(async () => {
@@ -30,23 +25,6 @@ describe('DELETE /api/v1/users/:id', () => {
       lastName: 'test',
       password: 'test'
     })
-
-    const userToken = await getLoginToken('user@gmail.com', 'test')
-    await createRestaurantTest(
-      {
-        name: 'Do Something',
-        description: 'Some random description'
-      },
-      userToken
-    )
-
-    await createRestaurantTest(
-      {
-        name: 'Do Something',
-        description: 'Some random description'
-      },
-      userToken
-    )
 
     await supertest(testServer)
       .delete(`/api/v1/users/${user.id}`)

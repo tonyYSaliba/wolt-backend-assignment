@@ -26,9 +26,15 @@ describe('GET /api/v1/restaurants/:id', () => {
   })
 
   it('Should return a single restaurant', async () => {
+    let location: [number, number]
+    location = [24.933257, 60.171263]
     const restaurant = {
-      name: 'Clean Room',
-      description: 'Mom said that I need to clean my room.'
+      blurhash: 'UAPp-JsCNbr[UQagn*V^p-bYjIjtL?kSo]bG',
+      location,
+      name: 'Charming Cherry House',
+      online: true,
+      launch_date: new Date('2020-09-20'),
+      popularity: 0.665082352909038
     }
 
     const createdRestaurant = await createRestaurantTest(restaurant, token)
@@ -39,9 +45,12 @@ describe('GET /api/v1/restaurants/:id', () => {
       .expect(200)
 
     expect(res.body).includes({
-      name: 'Clean Room',
-      description: 'Mom said that I need to clean my room.',
-      done: false
+      blurhash: 'UAPp-JsCNbr[UQagn*V^p-bYjIjtL?kSo]bG',
+      location,
+      name: 'Charming Cherry House',
+      online: true,
+      launch_date: new Date('2020-09-20'),
+      popularity: 0.665082352909038
     })
   })
 
