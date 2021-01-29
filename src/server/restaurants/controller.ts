@@ -23,6 +23,15 @@ export class RestaurantController {
     ctx.status = 200
   }
 
+  public async getAll(ctx: Context) {
+    const limit = isNaN(ctx.query.limit) ? 10 : parseInt(ctx.query.limit, 10)
+    const offset = isNaN(ctx.query.offset) ? 0 : parseInt(ctx.query.offset, 10)
+    const restaurants = await this.manager.findAll(limit, offset)
+
+    ctx.body = restaurants.map((r: Restaurant) => new RestaurantModel(r))
+    ctx.status = 200
+  }
+
   public async discovery(ctx: Context) {
     const longitude = isNaN(ctx.query.lon) ? 0 : parseFloat(ctx.query.lon)
     const latitude = isNaN(ctx.query.lat) ? 0 : parseFloat(ctx.query.lat)
@@ -115,7 +124,7 @@ export class RestaurantController {
     restaurant.location = restaurantDto.location
     restaurant.name = restaurantDto.name
     restaurant.online = restaurantDto.online
-    restaurant.launch_date = restaurantDto.launchDate
+    restaurant.launch_date = restaurantDto.launch_date
     restaurant.popularity = restaurantDto.popularity
     restaurant.created = restaurantDto.created
     restaurant.updated = restaurantDto.updated
@@ -131,7 +140,6 @@ export class RestaurantController {
     const id: number = ctx.params.id
 
     await this.manager.delete(id)
-
     ctx.status = 204
   }
 }

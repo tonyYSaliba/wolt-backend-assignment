@@ -29,6 +29,13 @@ export function init(server: Koa, container: ServiceContainer) {
     controller.get.bind(controller)
   )
 
+  router.get(
+    '/',
+    middleware.authentication(container.lib.authenticator),
+    middleware.authorization([Role.user, Role.admin]),
+    controller.getAll.bind(controller)
+  )
+
   router.post(
     '/',
     bodyParser(),
