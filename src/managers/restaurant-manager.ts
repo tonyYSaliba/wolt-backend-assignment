@@ -19,6 +19,44 @@ export class RestaurantManager {
     return this.repo.findAll(limit, offset)
   }
 
+  public async discoverRestaurants(
+    longitude: number,
+    latitude: number
+  ): Promise<Array<{ title: string; restaurants: Restaurant[] }>> {
+    const popularRestaurants = await this.discoverPopularRestaurants(
+      longitude,
+      latitude
+    )
+    const newestRestaurants = await this.discoverNewestRestaurants(
+      longitude,
+      latitude
+    )
+    const nearestRestaurants = await this.discoverNearestRestaurants(
+      longitude,
+      latitude
+    )
+    const discovery = []
+    if (popularRestaurants.length) {
+      discovery.push({
+        title: 'Popular Restaurants',
+        restaurants: popularRestaurants
+      })
+    }
+    if (newestRestaurants.length) {
+      discovery.push({
+        title: 'New Restaurants',
+        restaurants: newestRestaurants
+      })
+    }
+    if (nearestRestaurants.length) {
+      discovery.push({
+        title: 'Nearby Restaurants',
+        restaurants: nearestRestaurants
+      })
+    }
+    return discovery
+  }
+
   public async discoverPopularRestaurants(
     longitude: number,
     latitude: number

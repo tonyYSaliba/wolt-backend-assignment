@@ -29,24 +29,15 @@ export class RestaurantController {
   public async discovery(ctx: Context) {
     const longitude = isNaN(ctx.query.lon) ? 0 : parseFloat(ctx.query.lon)
     const latitude = isNaN(ctx.query.lat) ? 0 : parseFloat(ctx.query.lat)
-    const popularRestaurants = await this.manager.discoverPopularRestaurants(
-      longitude,
-      latitude
-    )
-    const newestRestaurants = await this.manager.discoverNewestRestaurants(
-      longitude,
-      latitude
-    )
-    const nearestRestaurants = await this.manager.discoverNearestRestaurants(
+
+    const discovery = await this.manager.discoverRestaurants(
       longitude,
       latitude
     )
     const sections = new SectionsModel()
-    sections.sections = [
-      new SectionModel('Popular Restaurants', popularRestaurants),
-      new SectionModel('New Restaurants', newestRestaurants),
-      new SectionModel('Nearby Restaurants', nearestRestaurants)
-    ]
+    discovery.map((s: { title: string; restaurants: Restaurant[] }) => {
+      sections.sections.push(new SectionModel(s.title, s.restaurants))
+    })
     ctx.body = sections
     ctx.status = 200
   }
