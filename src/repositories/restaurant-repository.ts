@@ -35,6 +35,25 @@ export class RestaurantRepository {
     return this.transform(row)
   }
 
+  public async findAll(limit: number, offset: number): Promise<Restaurant[]> {
+    const conn = await this.db.getConnection()
+    const results = await conn
+      .select(
+        '*',
+        knexPostgis(conn)
+          .x('location')
+          .as('longitude'),
+        knexPostgis(conn)
+          .y('location')
+          .as('latitude')
+      )
+      .from(this.TABLE)
+      .offset(offset)
+      .limit(limit)
+
+    return results.map((r: any) => this.transform(r))
+  }
+
   public async findByLowerRadiusOrderByPopularityAndOnline(
     longitude: number,
     latitude: number,
@@ -154,25 +173,28 @@ export class RestaurantRepository {
     const conn = await this.db.getConnection()
 
     try {
-      const result = await conn.table(this.TABLE).insert({
-        blurhash: restaurant.blurhash,
-        location: knexPostgis(conn).setSRID(
-          knexPostgis(conn).makePoint(
-            restaurant.location[0],
-            restaurant.location[1]
+      const id: number = await conn
+        .table(this.TABLE)
+        .insert({
+          blurhash: restaurant.blurhash,
+          location: knexPostgis(conn).setSRID(
+            knexPostgis(conn).makePoint(
+              restaurant.location[0],
+              restaurant.location[1]
+            ),
+            4326
           ),
-          4326
-        ),
-        name: restaurant.name,
-        online: restaurant.online,
-        launch_date: restaurant.launch_date,
-        popularity: restaurant.popularity,
-        created: restaurant.created,
-        updated: restaurant.updated
-      })
+          name: restaurant.name,
+          online: restaurant.online,
+          launch_date: restaurant.launch_date,
+          popularity: restaurant.popularity,
+          created: restaurant.created,
+          updated: restaurant.updated
+        })
+        .returning('id')
+        .into('restaurant')
 
-      restaurant.id = result[0]
-
+      restaurant.id = id[0]
       return restaurant
     } catch (err) {
       if (err.code === 'ER_DUP_ENTRY') {
