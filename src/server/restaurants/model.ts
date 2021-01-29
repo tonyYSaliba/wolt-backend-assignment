@@ -1,3 +1,4 @@
+import * as moment from 'moment'
 import { Restaurant } from '../../entities'
 
 export interface CreateRestaurant {
@@ -17,7 +18,7 @@ export class RestaurantModel {
   public name: string
   public online: boolean
   // tslint:disable-next-line: variable-name
-  public launch_date: Date
+  public launch_date: string
   public popularity: number
   // public created: Date
   // public updated: Date
@@ -28,7 +29,7 @@ export class RestaurantModel {
     this.location = restaurant.location
     this.name = restaurant.name
     this.online = restaurant.online
-    this.launch_date = restaurant.launch_date
+    this.launch_date = moment(restaurant.launch_date).format('YYYY-MM-DD')
     this.popularity = restaurant.popularity
     // this.created = restaurant.created
     // this.updated = restaurant.updated
