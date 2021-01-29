@@ -31,21 +31,25 @@ export class UserRepository {
     const conn = await this.db.getConnection()
 
     try {
-      const result = await conn.table(this.TABLE).insert({
-        email: user.email,
-        password: user.password,
-        role: user.role,
-        first_name: user.firstName,
-        last_name: user.lastName,
-        created: user.created,
-        updated: user.updated
-      })
+      const result = await conn
+        .table(this.TABLE)
+        .insert({
+          email: user.email,
+          password: user.password,
+          role: user.role,
+          first_name: user.firstName,
+          last_name: user.lastName,
+          created: user.created,
+          updated: user.updated
+        })
+        .returning('id')
+        .into('user')
 
       user.id = result[0]
 
       return user
     } catch (err) {
-      if (err.code === 'ER_DUP_ENTRY') {
+      if (err.code === '23505') {
         throw new ValidationError(`Email ${user.email} already exists`, err)
       }
 
@@ -83,23 +87,15 @@ export class UserRepository {
   }
 
   public async delete(userId: number): Promise<void> {
-    const trx = await this.db.getTransaction()
+    const conn = await this.db.getConnection()
 
-    try {
-      await trx
-        .from('restaurant')
-        .delete()
-        .where({ user_id: userId })
+    const result = await conn
+      .from(this.TABLE)
+      .delete()
+      .where({ id: userId })
 
-      await trx
-        .from(this.TABLE)
-        .delete()
-        .where({ id: userId })
-
-      await trx.commit()
-    } catch (error) {
-      trx.rollback(error)
-      throw error
+    if (result === 0) {
+      throw new NotFoundError('User does not exist')
     }
   }
 

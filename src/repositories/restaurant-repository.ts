@@ -197,7 +197,7 @@ export class RestaurantRepository {
       restaurant.id = id[0]
       return restaurant
     } catch (err) {
-      if (err.code === 'ER_DUP_ENTRY') {
+      if (err.code === '23505') {
         throw new ValidationError(
           `Restaurant ${restaurant.name} already exists`,
           err
@@ -255,7 +255,7 @@ export class RestaurantRepository {
       name: row.name,
       online: row.online,
       launch_date: row.launch_date,
-      popularity: row.popularity,
+      popularity: parseFloat(row.popularity),
       created: row.created,
       updated: row.updated
     }

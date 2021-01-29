@@ -20,7 +20,7 @@ export function up(db: knex) {
         table.string('name', 64).unique()
         table.boolean('online').notNullable()
         table.dateTime('launch_date').notNullable()
-        table.float('popularity').notNullable()
+        table.decimal('popularity', null).notNullable()
         table.dateTime('created').notNullable()
         table.dateTime('updated').notNullable()
       })

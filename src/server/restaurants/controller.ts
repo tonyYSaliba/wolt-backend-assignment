@@ -1,12 +1,7 @@
 import { Context } from 'koa'
 import { Restaurant } from '../../entities'
-import { AuthUser } from '../../lib/authentication'
 import { RestaurantManager } from '../../managers'
-import {
-  RestaurantDiscoveryModel,
-  RestaurantModel,
-  RestaurantSectionModel
-} from './model'
+import { RestaurantModel, SectionModel, SectionsModel } from './model'
 
 export class RestaurantController {
   private manager: RestaurantManager
@@ -16,7 +11,6 @@ export class RestaurantController {
   }
 
   public async get(ctx: Context) {
-    // const authUser: AuthUser = ctx.state.user
     const restaurant = await this.manager.find(ctx.params.id)
 
     ctx.body = new RestaurantModel(restaurant)
@@ -35,59 +29,30 @@ export class RestaurantController {
   public async discovery(ctx: Context) {
     const longitude = isNaN(ctx.query.lon) ? 0 : parseFloat(ctx.query.lon)
     const latitude = isNaN(ctx.query.lat) ? 0 : parseFloat(ctx.query.lat)
-    const radius = 1500
-    const limit = 10
-
-    const restaurantDiscovery = new RestaurantDiscoveryModel()
-
-    const restaurants = await this.manager.findByLowerRadiusOrderByPopularityAndOnline(
+    const popularRestaurants = await this.manager.discoverPopularRestaurants(
       longitude,
-      latitude,
-      radius,
-      limit
+      latitude
     )
-    const popularRestaurants = new RestaurantSectionModel('Popular Restaurants')
-    popularRestaurants.restaurants = restaurants.map(
-      (r: Restaurant) => new RestaurantModel(r)
-    )
-    restaurantDiscovery.sections.push(popularRestaurants)
-
-    const date = new Date()
-    date.setMonth(date.getMonth() - 4)
-    const restaurants2 = await this.manager.findByLowerRadiusAndGreaterDateOrderByDateAndOnline(
+    const newestRestaurants = await this.manager.discoverNewestRestaurants(
       longitude,
-      latitude,
-      radius,
-      date,
-      limit
+      latitude
     )
-    const newRestaurants = new RestaurantSectionModel('New Restaurants')
-    newRestaurants.restaurants = restaurants2.map(
-      (r: Restaurant) => new RestaurantModel(r)
-    )
-    restaurantDiscovery.sections.push(newRestaurants)
-
-    const restaurants3 = await this.manager.findByLowerRadiusOrderByDistanceAndOnline(
+    const nearestRestaurants = await this.manager.discoverNearestRestaurants(
       longitude,
-      latitude,
-      radius,
-      limit
+      latitude
     )
-    const nearbyRestaurants = new RestaurantSectionModel('Nearby Restaurants')
-    nearbyRestaurants.restaurants = restaurants3.map(
-      (r: Restaurant) => new RestaurantModel(r)
-    )
-    restaurantDiscovery.sections.push(nearbyRestaurants)
-
-    ctx.body = restaurantDiscovery
+    const sections = new SectionsModel()
+    sections.sections = [
+      new SectionModel('Popular Restaurants', popularRestaurants),
+      new SectionModel('New Restaurants', newestRestaurants),
+      new SectionModel('Nearby Restaurants', nearestRestaurants)
+    ]
+    ctx.body = sections
     ctx.status = 200
   }
 
   public async create(ctx: Context) {
-    const authUser: AuthUser = ctx.state.user
     const restaurant: Restaurant = ctx.request.body
-
-    console.log(authUser.id)
 
     const newRestaurant = await this.manager.create(restaurant)
 
@@ -97,17 +62,14 @@ export class RestaurantController {
   }
 
   public async upload(ctx: Context) {
-    const authUser: AuthUser = ctx.state.user
     const restaurants: Restaurant[] = ctx.request.body.restaurants
 
-    console.log(authUser.id)
     ctx.body = new Array()
     for await (const restaurant of restaurants) {
       try {
         await this.manager.create(restaurant)
         ctx.body.push(restaurant)
       } catch (error) {
-        // change to update
         ctx.body.push(error)
       }
     }
@@ -117,7 +79,6 @@ export class RestaurantController {
 
   public async update(ctx: Context) {
     const restaurantDto = ctx.request.body
-    // const authUser: AuthUser = ctx.state.user
     const restaurant = await this.manager.find(ctx.params.id)
 
     restaurant.blurhash = restaurantDto.blurhash
@@ -136,7 +97,6 @@ export class RestaurantController {
   }
 
   public async delete(ctx: Context) {
-    // const authUser: AuthUser = ctx.state.user
     const id: number = ctx.params.id
 
     await this.manager.delete(id)

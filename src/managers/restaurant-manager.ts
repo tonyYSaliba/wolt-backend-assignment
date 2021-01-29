@@ -1,6 +1,9 @@
 import { Restaurant } from '../entities'
 import { RestaurantRepository } from '../repositories'
 
+const discoveryRadius = 1500
+const discoveryLimit = 10
+const discoveryNewDuration = 4 // in months
 export class RestaurantManager {
   private repo: RestaurantRepository
 
@@ -12,51 +15,46 @@ export class RestaurantManager {
     return this.repo.find(id)
   }
 
-  public findAll(limit: number, offset: number): Promise<Restaurant[]> {
+  public async findAll(limit: number, offset: number): Promise<Restaurant[]> {
     return this.repo.findAll(limit, offset)
   }
 
-  public async findByLowerRadiusOrderByPopularityAndOnline(
+  public async discoverPopularRestaurants(
     longitude: number,
-    latitude: number,
-    radius: number,
-    limit: number
+    latitude: number
   ): Promise<Restaurant[]> {
     return this.repo.findByLowerRadiusOrderByPopularityAndOnline(
       longitude,
       latitude,
-      radius,
-      limit
+      discoveryRadius,
+      discoveryLimit
     )
   }
 
-  public async findByLowerRadiusAndGreaterDateOrderByDateAndOnline(
+  public async discoverNewestRestaurants(
     longitude: number,
-    latitude: number,
-    radius: number,
-    date: Date,
-    limit: number
+    latitude: number
   ): Promise<Restaurant[]> {
+    const date = new Date()
+    date.setMonth(date.getMonth() - discoveryNewDuration)
     return this.repo.findByLowerRadiusAndGreaterDateOrderByDateAndOnline(
       longitude,
       latitude,
-      radius,
+      discoveryRadius,
       date,
-      limit
+      discoveryLimit
     )
   }
 
-  public async findByLowerRadiusOrderByDistanceAndOnline(
+  public async discoverNearestRestaurants(
     longitude: number,
-    latitude: number,
-    radius: number,
-    limit: number
+    latitude: number
   ): Promise<Restaurant[]> {
     return this.repo.findByLowerRadiusOrderByDistanceAndOnline(
       longitude,
       latitude,
-      radius,
-      limit
+      discoveryRadius,
+      discoveryLimit
     )
   }
 
