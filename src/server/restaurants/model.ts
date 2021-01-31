@@ -7,7 +7,7 @@ export interface CreateRestaurant {
   location: [number, number]
   name: string
   online: boolean
-  launch_date: Date
+  launch_date: string
   popularity: number
 }
 
