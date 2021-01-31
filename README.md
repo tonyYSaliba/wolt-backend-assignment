@@ -71,14 +71,64 @@ DB_PASSWORD= secret
 6) Upload restaurants using [POST `/api/v1/restaurants/upload`](#restaurant-endpoints) and the data provided inside [restaurants.json](./restaurants.json) (just copy and paste the data into the body of the request)
 7) Test the discovery feature using [GET `/api/v1/restaurants/discovery?lat=60.1709&lon=24.941`](#restaurant-endpoints)
 
-## Other npm commands
+## Testing
 
-* *npm run clean* - Remove dist, node_modules, coverage folders
-* *npm run coverage* - Run NYC coverage
-* *npm run lint* - Lint the TypeScript code
+* Number of Unit tests: 14
+* Number of Integration tests: 60
+* Total Number of tests: 74
+
+**Coverage Report**
+
+```
+---------------------------|---------|----------|---------|---------|-------------------
+File                       | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
+---------------------------|---------|----------|---------|---------|-------------------
+All files                  |   95.83 |    72.58 |   95.42 |   95.88 | 
+ src                       |     100 |      100 |     100 |     100 | 
+  container.ts             |     100 |      100 |     100 |     100 | 
+  errors.ts                |     100 |      100 |     100 |     100 | 
+ src/lib/authentication    |     100 |      100 |     100 |     100 | 
+  index.ts                 |     100 |      100 |     100 |     100 | 
+ src/lib/database          |      75 |     62.5 |   71.43 |      75 |                   
+  index.ts                 |      75 |     62.5 |   71.43 |      75 | 32-40,86,95,105  
+ src/lib/hasher            |     100 |      100 |     100 |     100 | 
+  index.ts                 |     100 |      100 |     100 |     100 | 
+ src/lib/health            |     100 |      100 |     100 |     100 | 
+  index.ts                 |     100 |      100 |     100 |     100 | 
+ src/managers              |   98.04 |       90 |     100 |   97.96 |                   
+  index.ts                 |     100 |      100 |     100 |     100 |                   
+  restaurant-manager.ts    |     100 |      100 |     100 |     100 |                   
+  user-manager.ts          |   95.24 |       75 |     100 |   95.24 | 56
+ src/repositories          |   94.94 |    66.67 |     100 |   94.52 |                   
+  index.ts                 |     100 |      100 |     100 |     100 | 
+  restaurant-repository.ts |   97.78 |    83.33 |     100 |   97.56 | 207
+  user-repository.ts       |      90 |       50 |     100 |      90 | 21,56,98          
+ src/server                |      85 |       50 |   81.82 |   86.84 | 
+  index.ts                 |      85 |       50 |   81.82 |   86.84 | 26,31,40,42,56   
+ src/server/health         |     100 |      100 |     100 |     100 | 
+  controller.ts            |     100 |      100 |     100 |     100 |                   
+  index.ts                 |     100 |      100 |     100 |     100 | 
+ src/server/middlewares    |     100 |       90 |     100 |     100 | 
+  authentication.ts        |     100 |      100 |     100 |     100 | 
+```
+
+A graphical coverage report can be found in [index.html](./coverage_2021_01_31/index.html)
+
+To run the tests, you need to turn off the server, and turn on the database.
+
+A simple approach to this, is stopping the server in docker and running the PostgreSQL database in docker (it should be already installed).
+
+**Commands:**
 * *npm run test* - Run unit tests
 * *npm run test:integration* - Run integration tests
 * *npm run test:all* - Run Unit and Integration tests
+* *npm run coverage* - Run NYC coverage
+  
+## Other npm commands
+
+* *npm run clean* - Remove dist, node_modules, coverage folders
+* *npm run lint* - Lint the TypeScript code
+
 
 ## API endpoints
 
