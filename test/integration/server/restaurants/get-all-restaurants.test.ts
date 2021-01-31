@@ -33,7 +33,7 @@ describe('GET /api/v1/restaurants', () => {
       location: location1,
       name: 'Charming Cherry House',
       online: true,
-      launch_date: new Date('2020-09-20'),
+      launch_date: '2020-09-20',
       popularity: 0.665082352909038
     }
 
@@ -44,7 +44,7 @@ describe('GET /api/v1/restaurants', () => {
       location: location2,
       name: 'Potato Garden',
       online: false,
-      launch_date: new Date('2020-01-25'),
+      launch_date: '2020-01-25',
       popularity: 0.9385898095797295
     }
 

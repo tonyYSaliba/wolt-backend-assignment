@@ -33,7 +33,7 @@ describe('DELETE /api/v1/restaurants/:id', () => {
       location: location1,
       name: 'Charming Cherry House',
       online: true,
-      launch_date: new Date('2020-09-20'),
+      launch_date: '2020-09-20',
       popularity: 0.665082352909038
     }
 
