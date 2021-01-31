@@ -57,10 +57,8 @@ export class RestaurantController {
 
     ctx.body = new Array()
     for await (const restaurant of restaurants) {
- 
-        const newRestaurant = await this.manager.create(restaurant)
-        ctx.body.push(new RestaurantModel(newRestaurant))
-
+      const newRestaurant = await this.manager.create(restaurant)
+      ctx.body.push(new RestaurantModel(newRestaurant))
     }
     ctx.status = 201
     ctx.set('location', `/api/v1/restaurants/`)
