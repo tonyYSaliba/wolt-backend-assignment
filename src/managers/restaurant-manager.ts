@@ -1,9 +1,7 @@
 import { Restaurant } from '../entities'
+import CONSTANTS from '../lib/constants'
 import { RestaurantRepository } from '../repositories'
 
-const discoveryRadius = 1500
-const discoveryLimit = 10
-const discoveryNewDuration = 4 // in months
 export class RestaurantManager {
   private repo: RestaurantRepository
 
@@ -64,8 +62,8 @@ export class RestaurantManager {
     return this.repo.findByLowerRadiusOrderByPopularityAndOnline(
       longitude,
       latitude,
-      discoveryRadius,
-      discoveryLimit
+      CONSTANTS.discoveryRadius,
+      CONSTANTS.discoveryLimit
     )
   }
 
@@ -74,13 +72,13 @@ export class RestaurantManager {
     latitude: number
   ): Promise<Restaurant[]> {
     const date = new Date()
-    date.setMonth(date.getMonth() - discoveryNewDuration)
+    date.setMonth(date.getMonth() - CONSTANTS.discoveryNewDuration)
     return this.repo.findByLowerRadiusAndGreaterDateOrderByDateAndOnline(
       longitude,
       latitude,
-      discoveryRadius,
+      CONSTANTS.discoveryRadius,
       date,
-      discoveryLimit
+      CONSTANTS.discoveryLimit
     )
   }
 
@@ -91,8 +89,8 @@ export class RestaurantManager {
     return this.repo.findByLowerRadiusOrderByDistanceAndOnline(
       longitude,
       latitude,
-      discoveryRadius,
-      discoveryLimit
+      CONSTANTS.discoveryRadius,
+      CONSTANTS.discoveryLimit
     )
   }
 
