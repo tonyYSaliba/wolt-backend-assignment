@@ -1,12 +1,9 @@
 {
-  "name": "typescript-node",
+  "name": "wolt-backend-assignment",
   "version": "0.0.1",
   "description": "TypeScript template for backend applications.",
   "license": "MIT",
-  "repository": {
-    "url": "https://github.com/Talento90/typescript-node.git"
-  },
-  "author": "Talento90",
+  "author": "tonyYSaliba",
   "keywords": [
     "typescript",
     "nodejs",

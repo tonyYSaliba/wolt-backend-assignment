@@ -1,4 +1,4 @@
-# Backend assignment
+# Wolt Backend Assignment
 
 ## Introduction
 

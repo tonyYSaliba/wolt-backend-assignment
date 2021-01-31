@@ -46,8 +46,8 @@ describe('DELETE /api/v1/users/:id', () => {
   it('Should return not allowed error', async () => {
     await createUserTest({
       email: 'god@gmail.com',
-      firstName: 'Jesus',
-      lastName: 'Christ',
+      firstName: 'God',
+      lastName: 'Mode',
       password: 'godmode'
     })
 
