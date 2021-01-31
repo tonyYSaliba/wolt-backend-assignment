@@ -406,3 +406,16 @@ A simple approach to this, is stopping the server in docker and running the Post
     - Authorized roles:
         - user
         - admin
+
+
+## Database
+
+- Table ```migrations``` - contains **id, name, batch, migration_time**
+
+- Table ```migrations_lock``` - contains **index, is_locked**
+
+- Table ```restaurant``` - contains **id, blurhash, location, name, online, launch_date, popularity, created, updated**
+
+- Table ```spatial_ref_sys``` - contains **srid, auth_name, auth_srid, srtext, proj4text**
+
+- Table ```user``` - contains **id, email, password, role, first_name, last_name, created, updated**
