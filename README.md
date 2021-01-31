@@ -419,3 +419,11 @@ A simple approach to this, is stopping the server in docker and running the Post
 - Table ```spatial_ref_sys``` - contains **srid, auth_name, auth_srid, srtext, proj4text**
 
 - Table ```user``` - contains **id, email, password, role, first_name, last_name, created, updated**
+
+In Table ```restaurant``` we have two different B-Tree indexes on column **online** and column **location**.
+
+There is no additional Indexes since we will start facing drawback in the database's efficiency if we start overIndexing.
+
+column **email** from table ```user``` does not have a hash index, since in PostgreSQL database, a hash index will cause major drawbacks in certain events. Hence, hash index use is presently discouraged.
+
+

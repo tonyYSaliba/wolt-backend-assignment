@@ -23,6 +23,8 @@ export function up(db: knex) {
         table.decimal('popularity', null).notNullable()
         table.dateTime('created').notNullable()
         table.dateTime('updated').notNullable()
+        table.index(['location'])
+        table.index(['online'])
       })
     })
 }
