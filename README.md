@@ -80,36 +80,44 @@ DB_PASSWORD= secret
 **Coverage Report**
 
 ```
+  74 passing (6s)
+
 ---------------------------|---------|----------|---------|---------|-------------------
 File                       | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
 ---------------------------|---------|----------|---------|---------|-------------------
-All files                  |   95.83 |    72.58 |   95.42 |   95.88 | 
+All files                  |   95.42 |    70.97 |   95.42 |   95.44 | 
  src                       |     100 |      100 |     100 |     100 | 
   container.ts             |     100 |      100 |     100 |     100 | 
   errors.ts                |     100 |      100 |     100 |     100 | 
  src/lib/authentication    |     100 |      100 |     100 |     100 | 
+  index.ts                 |     100 |      100 |     100 |     100 |                   
+ src/lib/constants         |     100 |      100 |     100 |     100 | 
   index.ts                 |     100 |      100 |     100 |     100 | 
- src/lib/database          |      75 |     62.5 |   71.43 |      75 |                   
+ src/lib/database          |      75 |     62.5 |   71.43 |      75 | 
   index.ts                 |      75 |     62.5 |   71.43 |      75 | 32-40,86,95,105  
- src/lib/hasher            |     100 |      100 |     100 |     100 | 
+ src/lib/hasher            |     100 |      100 |     100 |     100 |                   
   index.ts                 |     100 |      100 |     100 |     100 | 
  src/lib/health            |     100 |      100 |     100 |     100 | 
   index.ts                 |     100 |      100 |     100 |     100 | 
- src/managers              |   98.04 |       90 |     100 |   97.96 |                   
+ src/managers              |   97.96 |       90 |     100 |   97.87 | 
   index.ts                 |     100 |      100 |     100 |     100 |                   
-  restaurant-manager.ts    |     100 |      100 |     100 |     100 |                   
+  restaurant-manager.ts    |     100 |      100 |     100 |     100 | 
   user-manager.ts          |   95.24 |       75 |     100 |   95.24 | 56
- src/repositories          |   94.94 |    66.67 |     100 |   94.52 |                   
-  index.ts                 |     100 |      100 |     100 |     100 | 
-  restaurant-repository.ts |   97.78 |    83.33 |     100 |   97.56 | 207
-  user-repository.ts       |      90 |       50 |     100 |      90 | 21,56,98          
- src/server                |      85 |       50 |   81.82 |   86.84 | 
-  index.ts                 |      85 |       50 |   81.82 |   86.84 | 26,31,40,42,56   
- src/server/health         |     100 |      100 |     100 |     100 | 
-  controller.ts            |     100 |      100 |     100 |     100 |                   
-  index.ts                 |     100 |      100 |     100 |     100 | 
- src/server/middlewares    |     100 |       90 |     100 |     100 | 
-  authentication.ts        |     100 |      100 |     100 |     100 | 
+ src/repositories          |   92.41 |    58.33 |     100 |   91.78 |
+  index.ts                 |     100 |      100 |     100 |     100 |
+  100 |     100 |
+  validator.ts             |     100 |      100 |     100 |     100 |
+ src/server/restaurants    |     100 |       50 |     100 |     100 |
+  controller.ts            |     100 |       50 |     100 |     100 | 21-31
+  index.ts                 |     100 |      100 |     100 |     100 |
+  model.ts                 |     100 |      100 |     100 |     100 |
+  validators.ts            |     100 |      100 |     100 |     100 |
+ src/server/users          |     100 |      100 |     100 |     100 |
+  controller.ts            |     100 |      100 |     100 |     100 |
+  index.ts                 |     100 |      100 |     100 |     100 |
+  model.ts                 |     100 |      100 |     100 |     100 |
+  validators.ts            |     100 |      100 |     100 |     100 |
+---------------------------|---------|----------|---------|---------|-------------------
 ```
 
 A graphical coverage report can be found in [index.html](./coverage_2021_01_31/index.html)
