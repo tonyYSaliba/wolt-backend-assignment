@@ -1,5 +1,24 @@
 # Wolt Backend Assignment
 
+## Table of Contents
+
+- [Wolt Backend Assignment](#wolt-backend-assignment)
+  - [Table of Contents](#table-of-contents)
+  - [Introduction](#introduction)
+  - [Features](#features)
+  - [Installation & Run](#installation--run)
+    - [Running with Docker](#running-with-docker)
+    - [Running without Docker](#running-without-docker)
+  - [Usage](#usage)
+  - [Testing](#testing)
+  - [Other npm commands](#other-npm-commands)
+  - [API endpoints](#api-endpoints)
+    - [Health endpoints](#health-endpoints)
+    - [User endpoints](#user-endpoints)
+    - [Restaurant endpoints](#restaurant-endpoints)
+  - [Database](#database)
+
+
 ## Introduction
 
 This is a REST Server built in nodejs and typescript.
@@ -424,6 +443,6 @@ In Table ```restaurant``` we have two different B-Tree indexes on column **onlin
 
 There is no additional Indexes since we will start facing drawback in the database's efficiency if we start overIndexing.
 
-column **email** from table ```user``` does not have a hash index, since in PostgreSQL database, a hash index will cause major drawbacks in certain events. Hence, hash index use is presently discouraged.
+Column **email** from table ```user``` does not have a hash index, since in PostgreSQL database, a hash index will cause major drawbacks in certain events. Hence, hash index use is presently discouraged.
 
 
